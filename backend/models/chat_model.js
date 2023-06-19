@@ -1,14 +1,14 @@
 // imports
-const mongoose  = require('mongoose');
+const mongoose = require('mongoose');
 
 // define schema
 const chatSchema = new mongoose.Schema({
-    members:{
-        type:Array
+    members: {
+        type: Array
     },
-    last_message:{
-        type:String
+    last_message: {
+        type: String
     }
-},{timestamps: true});
+}, { timestamps: true });
 
 module.exports = mongoose.model('chat', chatSchema);

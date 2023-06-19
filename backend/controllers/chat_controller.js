@@ -19,4 +19,14 @@ const addChat = async (req, res) => {
     }
 }
 
-module.exports = {addChat};
+const getChat = async (req, res) => {
+    const { sender_id, receiver_id } = req.body;
+    try {
+        const required_chat = await chat.findOne({ members: { $all: [sender_id, receiver_id] } });
+        res.status(200).json(required_chat);
+    } catch (error) {
+        res.status(500).json(error);
+    }
+}
+
+module.exports = { addChat, getChat };
