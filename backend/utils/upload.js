@@ -1,5 +1,6 @@
 // imports
-require('dotenv').config();
+const dotenv = require('dotenv');
+dotenv.config();
 const multer = require('multer');
 const { GridFsStorage } = require('multer-gridfs-storage');
 const url = process.env.MONGO_URI;

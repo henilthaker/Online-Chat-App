@@ -2,7 +2,7 @@
 const User = require('../models/user_model');
 
 //Add new User function
-export const addUser = async (request, response) => {
+const addUser = async (request, response) => {
     try {
         let exist = await User.findOne({ sub: request.body.sub });
 
@@ -20,11 +20,16 @@ export const addUser = async (request, response) => {
 }
 
 //Get all users data
-export const getUser = async (request, response) => {
+const getUser = async (request, response) => {
     try {
         const user = await User.find({});
         response.status(200).json(user);
     } catch (error) {
         response.status(500).json(error);
     }
+}
+
+module.exports = {
+    addUser,
+    getUser
 }
