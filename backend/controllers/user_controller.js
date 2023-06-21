@@ -1,5 +1,5 @@
 //imports
-import User from "../modal/User.js";
+import User from "../models/User.js";
 
 //Add new User function
 export const addUser = async (request, response) => {
