@@ -1,5 +1,5 @@
-const Message = require('../modal/message_model.js');
-const Chat = require('../modal/chat_model.js');
+const Message = require('../models/message_model.js');
+const Chat = require('../models/chat_model.js');
 
 // Add new message function
 export const newMessage = async (request, response) => {

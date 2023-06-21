@@ -1,5 +1,5 @@
 //imports
-const User = require('../modal/user_model.js');
+const User = require('../models/user_model');
 
 //Add new User function
 export const addUser = async (request, response) => {
