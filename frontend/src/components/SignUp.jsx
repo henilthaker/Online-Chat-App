@@ -2,8 +2,18 @@ import React from 'react'
 import { GoogleLogin } from '@react-oauth/google';
 import { toast } from 'react-toastify';
 import jwtDecode from 'jwt-decode';
+import { useContext } from 'react';
+import AccountContext from '../context/AccountDetails';
 
 const SignUp = () => {
+  const { setAccount } = useContext(AccountContext);
+
+  const loginSuccess = (data)=>{
+    const decodeData = jwtDecode(data.credential);
+    setAccount(decodeData);
+    toast.success('Login Success');
+  }
+
   return (
     <div>
         <section className="text-gray-600 body-font relative">
@@ -37,9 +47,7 @@ const SignUp = () => {
             <div className="p-2 w-fit mx-auto pt-8 mt-8 border-t border-gray-200 text-center">
                 <GoogleLogin
                     onSuccess={(data) => {
-                        const decodeData = jwtDecode(data.credential);
-                        console.log(decodeData);
-                        toast.success('Login Success');
+                        loginSuccess(data);
                     }}
                     onError={() => {
                         toast.error('Login Failed');
