@@ -11,5 +11,4 @@ const AccountState = (props) => {
         </AccountContext.Provider>
 )}
 
-
 export default AccountState;
