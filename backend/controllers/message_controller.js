@@ -1,8 +1,8 @@
-import Message from "../models/message_model.js";
-import Chat from '../models/chat_model.js';
+const Message = require('../models/message_model.js');
+const Chat = require('../models/chat_model.js');
 
 // Add new message function
-export const newMessage = async (request, response) => {
+const newMessage = async (request, response) => {
     const newMessage = new Message(request.body);
     try {
         await newMessage.save();
@@ -15,7 +15,7 @@ export const newMessage = async (request, response) => {
 }
 
 // Get message for particular chat function
-export const getMessage = async (request, response) => {
+const getMessage = async (request, response) => {
     try {
         const messages = await Message.find({ chatId: request.params.id });
         response.status(200).json(messages);
@@ -23,4 +23,9 @@ export const getMessage = async (request, response) => {
         response.status(500).json(error);
     }
 
+}
+
+module.exports = {
+    newMessage,
+    getMessage
 }
