@@ -6,6 +6,9 @@ import { useContext } from 'react';
 import AccountContext from '../context/AccountDetails';
 
 const SignUp = () => {
+
+  const { setAccount } = useContext(AccountContext);
+
   return (
     <div>
         <section className="text-gray-600 body-font relative">
@@ -40,7 +43,7 @@ const SignUp = () => {
                 <GoogleLogin
                     onSuccess={(data) => {
                         const decodeData = jwtDecode(data.credential);
-                        console.log(decodeData);
+                        setAccount(decodeData);
                         toast.success('Login Success');
                     }}
                     onError={() => {

@@ -3,7 +3,7 @@ import {useState} from 'react';
 
 const AccountState = (props) => {
 
-    const [account, setAccount] = useState();
+    const [account, setAccount] = useState(null);
 
     return (
         <AccountContext.Provider value={{account, setAccount}}>
