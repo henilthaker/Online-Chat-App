@@ -11,7 +11,7 @@ const app = express();
 // middleware
 app.use(cors());
 app.use(express.json());
-app.use(bodyParser.json({extended: true}))
+app.use(bodyParser.json({ extended: true }))
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
 
@@ -21,12 +21,15 @@ app.use((req, res, next) => {
 });
 
 // handle routes
-app.use('/api',Routes);
+app.use('/api', Routes);
 
 // connect to db and listen to reqeusts
 const url = process.env.MONGO_URI;
 const port = process.env.PORT || 4000;
-mongoose.connect(url)
+mongoose.connect(url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
     .then(() => {
         app.listen(port, () => {
             console.log(`Listening to port ${port}`);
