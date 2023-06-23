@@ -2,11 +2,17 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const Routes = require('./routes.js')
+const Routes = require('./routes.js');
+const cores = require('cors');
+const bodyParser = require('body-parser');
 // app config
 const app = express();
 
 // middleware
+app.use(cores());
+app.use(express.json());
+app.use(bodyParser.json({extended: true}))
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
 
 // handle routes

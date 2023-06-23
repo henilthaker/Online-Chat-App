@@ -9,6 +9,26 @@ const SignUp = () => {
 
   const { setAccount } = useContext(AccountContext);
 
+  const handleSuccess = async (data) => {
+    const decodeData = jwtDecode(data.credential);
+    setAccount(decodeData);
+    toast.success('Login Success');
+    try {
+        await fetch('http://localhost:5000/api/user/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'cors': 'no-cors'
+            },
+            body: JSON.stringify({
+                data: decodeData
+            })
+        })
+    } catch (error) {
+        console.log('Something went wrong'+error.message);
+    }
+  }
+
   return (
     <div>
         <section className="text-gray-600 body-font relative">
@@ -20,7 +40,7 @@ const SignUp = () => {
         <div className="flex flex-wrap -m-2">
             <div className="p-2 w-1/2">
             <div className="relative">
-                <label for="name" className="leading-7 text-sm text-gray-600">Name</label>
+                <label htmlFor="name" className="leading-7 text-sm text-gray-600">Name</label>
                 <input type="text" id="name" name="name" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"/>
             </div>
             </div>
@@ -42,9 +62,7 @@ const SignUp = () => {
             <div className="p-2 w-fit mx-auto pt-8 mt-8 border-t border-gray-200 text-center">
                 <GoogleLogin
                     onSuccess={(data) => {
-                        const decodeData = jwtDecode(data.credential);
-                        setAccount(decodeData);
-                        toast.success('Login Success');
+                        handleSuccess(data);
                     }}
                     onError={() => {
                         toast.error('Login Failed');
