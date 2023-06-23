@@ -1,5 +1,4 @@
 import '../styles/sidebar.css';
-import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import SingleChat from './SingleChat';
@@ -26,7 +25,7 @@ const SideBar = () => {
         <div className="sidebar">
             <div className="sidebar_header">
                 <b><div className="sidebar_title">Chats</div></b>
-                <Avatar />
+                <img src={account.picture} alt="profile" className="h-[50px] rounded-full" />
             </div>
             <Divider variant="middle" />
             <div className="sidebar_search">
