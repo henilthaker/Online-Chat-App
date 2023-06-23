@@ -4,13 +4,12 @@ const User = require('../models/user_model');
 //Add new User function
 const addUser = async (request, response) => {
     try {
-        let exist = await User.findOne({ sub: request.body.sub });
+        let exist = await User.find({ email: request.body.email });
 
         if(exist) {
             response.status(200).json('user already exists');
             return;
         }
-
         const newUser = new User(request.body);
         await newUser.save();
         response.status(200).json(newUser);
