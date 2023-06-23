@@ -1,12 +1,12 @@
 import '../styles/singlechat.css'
 import Avatar from '@mui/material/Avatar';
-const SingleChat = () => {
+const SingleChat = ({ user }) => {
     return (
         <div className="singleChat">
             <Avatar />
             <div className="singleChat_details">
-                <b><div className="personName">Person Name</div></b>
-                <p className = "lastMessage">This is the last message</p>
+                <b><div className="personName">{user.name}</div></b>
+                <p className="lastMessage">This is the last message</p>
             </div>
         </div>
     );
