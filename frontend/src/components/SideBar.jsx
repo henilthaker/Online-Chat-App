@@ -21,6 +21,19 @@ const SideBar = () => {
 
         getUsers();
     }, [])
+
+    const Search = async (text) => {
+        try {
+            const response = await axios.get('/user/get');
+            const filterData = response.data.filter((user) => {
+                return user.name.toLowerCase().includes(text.toLowerCase());
+            })
+            setUsers(filterData);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <div className="sidebar min-w-[50vh]">
             <div className="sidebar_header">
@@ -31,7 +44,7 @@ const SideBar = () => {
             <div className="sidebar_search">
                 <div className="sidebar_searchContainer">
                     <SearchOutlinedIcon />
-                    <input placeholder="Search or start new chat" type="text" />
+                    <input placeholder="Search or start new chat" type="text" onChange={(e)=>Search(e.target.value)}/>
                 </div>
             </div>
             <div className="chatList">
