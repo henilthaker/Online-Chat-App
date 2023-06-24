@@ -9,7 +9,7 @@ const Wrapper = styled(Box)`
 `;
 
 const Component = styled(Box)`
-    height: 74vh;
+    height: 72vh;
     overflow-y: scroll;
 `;
 

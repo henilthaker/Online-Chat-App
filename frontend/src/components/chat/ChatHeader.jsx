@@ -11,10 +11,10 @@ const Image = styled('img')({
 const ChatHeader = ({ person }) => {  
 
     return (
-        <Box className="Header">
-            <Image src={""} alt="display picture" />     
+        <Box className="Header my-2">
+            <Image src={person.picture} alt="display picture" />     
             <Box>
-                <Typography className='Name'>Henil</Typography>
+                <Typography className='Name'>{person.name}</Typography>
                 <Typography className='Status'>Offline</Typography>    
             </Box>   
         </Box>

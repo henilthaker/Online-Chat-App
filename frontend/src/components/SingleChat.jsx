@@ -3,8 +3,9 @@ import axios from '../Axios.js';
 import { useContext } from 'react';
 import AccountContext from '../context/AccountDetails';
 const SingleChat = ({ user }) => {
-    const { account } = useContext(AccountContext);
+    const { account, setPerson } = useContext(AccountContext);
     const createChat = async (e) => {
+        setPerson(user);
         e.preventDefault();
         const body = { sender_id : account.sub, receiver_id : user.sub };
         await axios.post('/chats/add',body, {
