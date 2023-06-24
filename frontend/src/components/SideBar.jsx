@@ -25,7 +25,7 @@ const SideBar = () => {
         <div className="sidebar">
             <div className="sidebar_header">
                 <b><div className="sidebar_title">Chats</div></b>
-                <img src={account.picture} alt="profile" className="h-[50px] rounded-full" />
+                <img src={account.picture} alt="profile" className="h-[40px] rounded-full" />
             </div>
             <Divider variant="middle" />
             <div className="sidebar_search">

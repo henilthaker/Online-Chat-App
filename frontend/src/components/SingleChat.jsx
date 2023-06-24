@@ -15,7 +15,7 @@ const SingleChat = ({ user }) => {
     }
     return (
         <div className="singleChat" onClick={createChat}>
-            <img src={user.picture} className="rounded-full h-[50px]" alt='profile-pic' />
+            <img src={user.picture} className="rounded-full h-[40px]" alt='profile-pic' />
             <div className="singleChat_details">
                 <b><div className="personName">{user.name}</div></b>
                 <p className="lastMessage">This is the last message</p>
