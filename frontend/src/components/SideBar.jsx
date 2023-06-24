@@ -3,7 +3,7 @@ import Divider from '@mui/material/Divider';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import SingleChat from './SingleChat';
 import axios from '../Axios.js';
-import { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import AccountContext from '../context/AccountDetails';
 const SideBar = () => {
     const [users, setUsers] = useState([]);
@@ -38,12 +38,13 @@ const SideBar = () => {
                 {
                     users && users.map((user, index) => (
                         user.sub !== account.sub &&
-                        <>
+                        // <> is shorthand syntax for <React.Fragment> but you can't write <key={...}> so we need to write React.Fragment
+                        <React.Fragment key={user.sub}>
                             <SingleChat user={user} />
                             {
                                 users.length !== (index + 1) && <Divider variant='middle' />
                             }
-                        </>
+                        </React.Fragment>
                     ))
                 }
             </div>
