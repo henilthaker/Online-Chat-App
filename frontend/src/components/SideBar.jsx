@@ -22,7 +22,7 @@ const SideBar = () => {
         getUsers();
     }, [])
     return (
-        <div className="sidebar">
+        <div className="sidebar min-w-[50vh]">
             <div className="sidebar_header">
                 <b><div className="sidebar_title">Chats</div></b>
                 <img src={account.picture} alt="profile" className="h-[40px] rounded-full" />
