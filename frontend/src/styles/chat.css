@@ -1,0 +1,36 @@
+.Header{
+    height: 44px;
+    background: #ededed;
+    display: flex;
+    padding: 8px 16px;
+    align-items: center;
+}
+
+.Name{
+    margin-left: 12px !important;
+}
+
+.Status{
+    font-size: 12px !important;
+    color: rgb(0, 0, 0, 0.6);
+    margin-left: 12px !important;
+}
+
+.Search{
+    border-radius: 18px;
+    background-color: #FFFFFF;
+    width: calc(94% - 100px);
+}
+
+.InputField{
+    width: 100%;
+    padding: 20px;
+    padding-left: 25px;
+    font-size: 14px;
+    height: 20px;
+    width: 100%;
+}
+
+.ClipIcon{
+    transform: 'rotate(40deg)'
+}

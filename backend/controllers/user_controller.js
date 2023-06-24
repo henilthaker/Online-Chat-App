@@ -6,7 +6,6 @@ const addUser = async (request, response) => {
     let exist = await User.findOne({ email: request.body.email });
 
     if (exist) {
-        console.log('user already exists');
         response.status(200).json('user already exists');
         return;
     }
