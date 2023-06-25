@@ -1,6 +1,10 @@
 import { EmojiEmotions, AttachFile } from '@mui/icons-material';
 import { Box, InputBase, styled } from '@mui/material';
 import '../../styles/chat.css'
+import { useState, useContext } from 'react';
+import SendIcon from '@mui/icons-material/Send';
+import axios from '../../Axios.js'
+import AccountContext from '../../context/AccountDetails';
 
 const Container = styled(Box)`
     height: 55px;
@@ -16,7 +20,26 @@ const Container = styled(Box)`
 `;
 
 const Footer = () => {
+    const { account, person, chat } = useContext(AccountContext);
+    const [message, setMessage] = useState('');
 
+    const sendMessage = async (e) => {
+        e.preventDefault();
+        const body = {
+            chatId : chat._id,
+            senderId : account.sub,
+            receiverId : person.sub,
+            text : message,
+            type : 'text'
+        };
+
+        await axios.post('/message/new', body, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        setMessage('');
+    }
     return (
         <Container>
             <EmojiEmotions />
@@ -30,8 +53,13 @@ const Footer = () => {
             />
 
             <Box className="Search">
-                <InputBase className='InputField'
-                />
+                <form onSubmit={sendMessage}>
+                    <InputBase className='InputField'
+                        placeholder='Type a message'
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                    />
+                </form>
             </Box>
         </Container>
     )

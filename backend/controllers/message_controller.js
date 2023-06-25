@@ -6,7 +6,7 @@ const newMessage = async (request, response) => {
     const newMessage = new Message(request.body);
     try {
         await newMessage.save();
-        await Chat.findByIdAndUpdate(request.body.chatId, { message: request.body.text });
+        await Chat.findByIdAndUpdate(request.body.chatId, { last_message: request.body.text });
         response.status(200).json("Message has been sent successfully");
     } catch (error) {
         response.status(500).json(error);
