@@ -3,6 +3,7 @@ import AccountContext from '../../context/AccountDetails';
 import React, { useState, useContext, useEffect } from 'react';
 import axios from '../../Axios.js';
 import '../../styles/message.css';
+import { PictureAsPdf, GetAppRounded } from '@mui/icons-material';
 
 //components
 import Footer from './Footer';
@@ -47,6 +48,27 @@ const Messages = () => {
     const [file, setFile] = useState();
     const [Image, setImage] = useState('');
 
+    const downLoadMedia = (e, url) => { 
+        e.preventDefault();
+        try {
+            fetch(url)
+            .then(res => res.blob())
+            .then(blob => {
+                const url2 = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url2;
+
+                a.download = url.split('/').pop().split('_')[0].split('file')[0];
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url2);
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     let cur_date = '';
     useEffect(() => {
         const getMessages = async () => {
@@ -81,11 +103,15 @@ const Messages = () => {
                             <div className="messageContainer">
                                 {
                                     message.type === 'file' ?  
-                                        <Box className={`messageBox ${message.senderId === account.sub && 'sentMessage'}`}>
-                                            {message.text.split('/').pop().split('_')[0].split('file')[0]}
+                                        <Box className={`messageBox relative w-fit ${message.senderId === account.sub && 'sentMessage'}`}>
+                                            {message.text.includes('.jpg') ? <Box className='relative'><img src={message.text} alt='img' className='rounded-sm pr-2'/><GetAppRounded  onClick={(e)=> downLoadMedia(e,message.text)} className='text-gray-500 absolute bottom-0 right-2'/> </Box>: <Box>
+                                            <p className='flex gap-2'><PictureAsPdf className='text-red-500'/>
+                                            <p className='pl-1 pr-8'>{message.text.split('/').pop().split('_')[0].split('file')[0]}</p></p>
+                                            <GetAppRounded onClick={(e)=>{ downLoadMedia(e,message.text)}} className='text-gray-500 absolute bottom-0 right-0'/>
+                                            </Box>}
                                         </Box> 
                                     : 
-                                    <Box className={`messageBox ${message.senderId === account.sub && 'sentMessage'}`}>
+                                    <Box className={`messageBox relative w-fit ${message.senderId === account.sub && 'sentMessage'}`}>
                                         {message.text}
                                         <span className="time">{formatDate(message.updatedAt)}</span>
                                     </Box>
