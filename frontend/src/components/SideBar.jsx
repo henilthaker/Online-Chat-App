@@ -9,12 +9,13 @@ const SideBar = () => {
     const [users, setUsers] = useState([]);
     const { account } = useContext(AccountContext);
 
-    const getUsers = async (text) => {
+    const getUsers = async (text = '') => {
         try {
             const response = await axios.get('/user/get');
+            // console.log(response.data);
             const filteredUsers = response.data.filter((user) => {
                 return user.name.toLowerCase().includes(text.toLowerCase());
-            })
+            });
             setUsers(filteredUsers);
         } catch (error) {
             console.log(error);

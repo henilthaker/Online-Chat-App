@@ -7,7 +7,7 @@ const addChat = async (req, res) => {
     const already_exist = await chat.findOne({ members: { $all: [sender_id, receiver_id] } });
 
     if (already_exist)
-        return res.status(200).json('Chat already exists');
+        return res.status(200).json(already_exist);
 
     const new_chat = new chat({ members: [sender_id, receiver_id] });
 
