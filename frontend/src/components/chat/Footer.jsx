@@ -1,7 +1,7 @@
 import { EmojiEmotions, AttachFile } from '@mui/icons-material';
 import { Box, InputBase, styled } from '@mui/material';
 import '../../styles/chat.css'
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import axios from '../../Axios.js'
 import AccountContext from '../../context/AccountDetails';
 
@@ -18,9 +18,29 @@ const Container = styled(Box)`
     }
 `;
 
-const Footer = () => {
+const Footer = ({file, setFile}) => {
     const { account, person, chat } = useContext(AccountContext);
     const [message, setMessage] = useState('');
+
+    const uploadFile = async (data) => {
+        try {
+            await axios.post('/file/upload', data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        const getImage = async () => {
+            if(file) {
+                const data = new FormData();
+                data.append('name', file.name);
+                data.append('file', file);
+                await uploadFile(data);
+            }
+        }
+        getImage();
+    }, [file]);
 
     const sendMessage = async (e) => {
         e.preventDefault();
@@ -39,6 +59,13 @@ const Footer = () => {
         });
         setMessage('');
     }
+
+    const onFileChange = async (e) => {
+        let files = e.target.files;
+        setMessage(files[0].name);
+        setFile(files[0]);
+    }
+
     return (
         <Container>
             <EmojiEmotions />
@@ -49,6 +76,7 @@ const Footer = () => {
                 type='file'
                 id="fileInput"
                 style={{ display: 'none' }}
+                onChange={(e) => onFileChange(e)}
             />
 
             <Box className="Search">

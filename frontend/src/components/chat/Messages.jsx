@@ -44,6 +44,9 @@ const formatDate = (date) => {
 const Messages = () => {
     const { account, chat } = useContext(AccountContext);
     const [messages, setMessages] = useState([]);
+    const [file, setFile] = useState();
+    const [Image, setImage] = useState('');
+
     let cur_date = '';
     useEffect(() => {
         const getMessages = async () => {
@@ -85,7 +88,7 @@ const Messages = () => {
                     )
                 })}
             </Component>
-            <Footer />
+            <Footer file={file} setFile={setFile} setImage={setImage} />
         </Wrapper>
     )
 }

@@ -26,6 +26,6 @@ router.get('/user/get', getUser);
 
 // file routes
 router.post('/file/upload', upload.single('file'), uploadFile);
-router.get('file/get/:filename', getFile);
+router.get('/file/:filename', getFile);
 
 module.exports = router;
