@@ -79,16 +79,23 @@ const Messages = () => {
                                 </Box>
                             }
                             <div className="messageContainer">
-                                <Box className={`messageBox ${message.senderId === account.sub && 'sentMessage'}`}>
-                                    {message.text}
-                                    <span className="time">{formatDate(message.updatedAt)}</span>
-                                </Box>
+                                {
+                                    message.type === 'file' ?  
+                                        <Box className={`messageBox ${message.senderId === account.sub && 'sentMessage'}`}>
+                                            {message.text.split('/').pop().split('_')[0].split('file')[0]}
+                                        </Box> 
+                                    : 
+                                    <Box className={`messageBox ${message.senderId === account.sub && 'sentMessage'}`}>
+                                        {message.text}
+                                        <span className="time">{formatDate(message.updatedAt)}</span>
+                                    </Box>
+                                }
                             </div>
                         </ React.Fragment>
                     )
                 })}
             </Component>
-            <Footer file={file} setFile={setFile} setImage={setImage} />
+            <Footer file={file} setFile={setFile} setImage={setImage} Image={Image} />
         </Wrapper>
     )
 }

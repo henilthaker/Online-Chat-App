@@ -18,13 +18,14 @@ const Container = styled(Box)`
     }
 `;
 
-const Footer = ({file, setFile}) => {
+const Footer = ({file, setFile, setImage, Image}) => {
     const { account, person, chat } = useContext(AccountContext);
     const [message, setMessage] = useState('');
 
     const uploadFile = async (data) => {
         try {
-            await axios.post('/file/upload', data);
+            const responce = await axios.post('/file/upload', data);
+            setImage(responce.data);
         } catch (error) {
             console.log(error);
         }
@@ -52,6 +53,11 @@ const Footer = ({file, setFile}) => {
             type : 'text'
         };
 
+        if(file){
+            body.text = Image;
+            body.type = 'file';
+        }
+
         await axios.post('/message/new', body, {
             headers: {
                 'Content-Type': 'application/json'
@@ -62,7 +68,7 @@ const Footer = ({file, setFile}) => {
 
     const onFileChange = async (e) => {
         let files = e.target.files;
-        setMessage(files[0].name);
+        setMessage(files[0]?.name);
         setFile(files[0]);
     }
 
