@@ -8,31 +8,22 @@ import AccountContext from '../context/AccountDetails';
 const SideBar = () => {
     const [users, setUsers] = useState([]);
     const { account } = useContext(AccountContext);
-    useEffect(() => {
 
-        const getUsers = async () => {
-            try {
-                const response = await axios.get('/user/get');
-                setUsers(response.data);
-            } catch (error) {
-                console.log(error);
-            }
-        }
-
-        getUsers();
-    }, [])
-
-    const Search = async (text) => {
+    const getUsers = async (text) => {
         try {
             const response = await axios.get('/user/get');
-            const filterData = response.data.filter((user) => {
+            const filteredUsers = response.data.filter((user) => {
                 return user.name.toLowerCase().includes(text.toLowerCase());
             })
-            setUsers(filterData);
+            setUsers(filteredUsers);
         } catch (error) {
             console.log(error);
         }
     }
+
+    useEffect(() => {
+        getUsers();
+    }, [])
 
     return (
         <div className="sidebar min-w-[50vh]">
@@ -44,7 +35,7 @@ const SideBar = () => {
             <div className="sidebar_search">
                 <div className="sidebar_searchContainer">
                     <SearchOutlinedIcon />
-                    <input placeholder="Search or start new chat" type="text" onChange={(e)=>Search(e.target.value)}/>
+                    <input placeholder="Search or start new chat" type="text" onChange={(e)=>getUsers(e.target.value)}/>
                 </div>
             </div>
             <div className="chatList">
