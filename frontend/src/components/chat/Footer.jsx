@@ -2,7 +2,6 @@ import { EmojiEmotions, AttachFile } from '@mui/icons-material';
 import { Box, InputBase, styled } from '@mui/material';
 import '../../styles/chat.css'
 import { useState, useContext } from 'react';
-import SendIcon from '@mui/icons-material/Send';
 import axios from '../../Axios.js'
 import AccountContext from '../../context/AccountDetails';
 
@@ -44,7 +43,7 @@ const Footer = () => {
         <Container>
             <EmojiEmotions />
             <label htmlFor="fileInput">
-                <AttachFile className='ClipIcon' />
+                <AttachFile className='rotate-45' />
             </label>
             <input
                 type='file'
