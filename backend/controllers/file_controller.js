@@ -18,7 +18,7 @@ connection.once('open', () => {
 const uploadFile = (req, res) => {
     if (!req.file)
         return res.status(404).json('file not found');
-    const file_url = `${base_url}/file/${req.file.filename}`;
+    const file_url = `${base_url}/api/file/${req.file.filename}`;
     res.status(200).json(file_url);
 }
 
@@ -26,7 +26,7 @@ const getFile = async (req, res) => {
     try {
         const required_file = await gfs.files.findOne({ filename: req.params.filename });
 
-        const download_stream = gridfs_bucket.openDownloadStream(file._id);
+        const download_stream = gridfs_bucket.openDownloadStream(required_file._id);
         download_stream.pipe(res);
     } catch (error) {
         response.status(500).json(error);

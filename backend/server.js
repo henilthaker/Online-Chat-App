@@ -5,8 +5,17 @@ const mongoose = require('mongoose');
 const Routes = require('./routes.js');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const Pusher = require('pusher');
 // app config
 const app = express();
+
+const pusher = new Pusher({
+    appId: "1625017",
+    key: "8de87b75a39cda78cd32",
+    secret: "32259869f1f801fa1bbe",
+    cluster: "ap2",
+    useTLS: true
+});
 
 // middleware
 app.use(cors());
@@ -36,3 +45,18 @@ mongoose.connect(url, {
         })
     })
     .catch(error => console.log(error));
+
+const db = mongoose.connection;
+db.once('open', () => {
+    const msg_collection = db.collection('messages');
+    const change_stream = msg_collection.watch();
+    change_stream.on('change', (change) => {
+        console.log(change);
+        if (change.operationType === 'insert') {
+            const msg_details = change.fullDocument;
+            pusher.trigger('messages', 'inserted', msg_details);
+        }else{
+            console.log('Error triggering pusher');
+        }
+    })
+})
