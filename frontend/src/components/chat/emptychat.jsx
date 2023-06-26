@@ -3,7 +3,7 @@ import '../../styles/empthchat.css';
 import emptyChatImage from '../../assets/chat.jpg';
 
 const Image = styled('img')({
-    marginTop: 100,
+    // marginTop: 100,
     width: 400
 })
 
