@@ -57,9 +57,9 @@ const Footer = ({file, setFile, setImage, Image}) => {
     }, [file]);
 
     const sendMessage = async (e) => {
+        e.preventDefault();
         if(message === '')
             return;
-        e.preventDefault();
         const body = {
             chatId : chat._id,
             senderId : account.sub,
