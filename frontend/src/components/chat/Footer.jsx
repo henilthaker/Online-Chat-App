@@ -1,9 +1,10 @@
-import { EmojiEmotions, AttachFile } from '@mui/icons-material';
+import { EmojiEmotions, AttachFile} from '@mui/icons-material';
 import { Box, InputBase, styled } from '@mui/material';
 import '../../styles/chat.css'
 import { useState, useContext, useEffect } from 'react';
 import axios from '../../Axios.js'
 import AccountContext from '../../context/AccountDetails';
+import SendIcon from '@mui/icons-material/Send';
 
 const Container = styled(Box)`
     height: 55px;
@@ -16,6 +17,18 @@ const Container = styled(Box)`
         margin: 5px;
         color: #919191;
     }
+`;
+
+const SendButton = styled(SendIcon)`
+    background-color: #128C7E;
+    border-radius: 50%;
+    padding: 8px;
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+    color: white;
+    font-size: 10px;
+    box-sizing: border-box;
 `;
 
 const Footer = ({file, setFile, setImage, Image}) => {
@@ -44,6 +57,8 @@ const Footer = ({file, setFile, setImage, Image}) => {
     }, [file]);
 
     const sendMessage = async (e) => {
+        if(message === '')
+            return;
         e.preventDefault();
         const body = {
             chatId : chat._id,
@@ -94,6 +109,7 @@ const Footer = ({file, setFile, setImage, Image}) => {
                     />
                 </form>
             </Box>
+            <SendButton onClick={sendMessage} />
         </Container>
     )
 }
