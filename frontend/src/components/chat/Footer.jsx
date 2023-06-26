@@ -1,8 +1,7 @@
 import { EmojiEmotions, AttachFile } from '@mui/icons-material';
 import { Box, InputBase, styled } from '@mui/material';
 import '../../styles/chat.css'
-import { useState, useContext } from 'react';
-import SendIcon from '@mui/icons-material/Send';
+import { useState, useContext, useEffect } from 'react';
 import axios from '../../Axios.js'
 import AccountContext from '../../context/AccountDetails';
 
@@ -19,9 +18,30 @@ const Container = styled(Box)`
     }
 `;
 
-const Footer = () => {
+const Footer = ({file, setFile, setImage, Image}) => {
     const { account, person, chat } = useContext(AccountContext);
     const [message, setMessage] = useState('');
+
+    const uploadFile = async (data) => {
+        try {
+            const responce = await axios.post('/file/upload', data);
+            setImage(responce.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        const getImage = async () => {
+            if(file) {
+                const data = new FormData();
+                data.append('name', file.name);
+                data.append('file', file);
+                await uploadFile(data);
+            }
+        }
+        getImage();
+    }, [file]);
 
     const sendMessage = async (e) => {
         e.preventDefault();
@@ -33,6 +53,11 @@ const Footer = () => {
             type : 'text'
         };
 
+        if(file){
+            body.text = Image;
+            body.type = 'file';
+        }
+
         await axios.post('/message/new', body, {
             headers: {
                 'Content-Type': 'application/json'
@@ -40,16 +65,24 @@ const Footer = () => {
         });
         setMessage('');
     }
+
+    const onFileChange = async (e) => {
+        let files = e.target.files;
+        setMessage(files[0]?.name);
+        setFile(files[0]);
+    }
+
     return (
         <Container>
             <EmojiEmotions />
             <label htmlFor="fileInput">
-                <AttachFile className='ClipIcon' />
+                <AttachFile className='rotate-45' />
             </label>
             <input
                 type='file'
                 id="fileInput"
                 style={{ display: 'none' }}
+                onChange={(e) => onFileChange(e)}
             />
 
             <Box className="Search">

@@ -30,7 +30,7 @@ const SingleChat = ({ user }) => {
             <img src={user.picture} className="rounded-full h-[40px]" alt='profile-pic' />
             <div className="singleChat_details">
                 <b><div className="personName">{user.name}</div></b>
-                <p className="lastMessage">{cur_chat.last_message}</p>
+                <p className="lastMessage">{cur_chat.last_message?.includes('/') ? cur_chat.last_message?.split('/').pop().split('_')[0].split('file')[0] : cur_chat.last_message}</p>
             </div>
         </div>
     );
