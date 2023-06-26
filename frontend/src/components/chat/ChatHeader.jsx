@@ -1,6 +1,8 @@
 import { Box, Typography, styled } from '@mui/material';
-import '../../styles/chat.css'
-    
+import '../../styles/chat.css';
+import AccountContext from '../../context/accountContext/AccountDetails';    
+import React, { useContext } from 'react';
+
 const Image = styled('img')({
     width: 40,
     height: 40,
@@ -9,13 +11,13 @@ const Image = styled('img')({
 })
 
 const ChatHeader = ({ person }) => {  
-
+    const { users } = useContext(AccountContext);
     return (
         <Box className="Header my-2">
             <Image src={person.picture} alt="display picture" />     
             <Box>
                 <Typography className='Name'>{person.name}</Typography>
-                <Typography className='Status'>Offline</Typography>    
+                <Typography className='Status'>{ users.find( user => user.sub === person.sub) ? 'Online' : 'Offline'}</Typography>    
             </Box>   
         </Box>
     )
