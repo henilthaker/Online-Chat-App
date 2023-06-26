@@ -3,7 +3,7 @@ import { GoogleLogin } from '@react-oauth/google';
 import { toast } from 'react-toastify';
 import jwtDecode from 'jwt-decode';
 import { useContext } from 'react';
-import AccountContext from '../context/AccountDetails';
+import AccountContext from '../context/accountContext/AccountDetails';
 
 const SignUp = () => {
 

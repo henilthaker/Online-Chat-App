@@ -1,9 +1,10 @@
-import { EmojiEmotions, AttachFile } from '@mui/icons-material';
+import { EmojiEmotions, AttachFile} from '@mui/icons-material';
 import { Box, InputBase, styled } from '@mui/material';
 import '../../styles/chat.css'
 import { useState, useContext, useEffect } from 'react';
 import axios from '../../Axios.js'
-import AccountContext from '../../context/AccountDetails';
+import AccountContext from '../../context/accountContext/AccountDetails';
+import SendIcon from '@mui/icons-material/Send';
 
 const Container = styled(Box)`
     height: 55px;
@@ -18,10 +19,23 @@ const Container = styled(Box)`
     }
 `;
 
+const SendButton = styled(SendIcon)`
+    background-color: #128C7E;
+    border-radius: 50%;
+    padding: 8px;
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+    color: white;
+    font-size: 10px;
+    box-sizing: border-box;
+`;
+
 const Footer = ({file, setFile, setImage, Image}) => {
     const { account, person, chat } = useContext(AccountContext);
     const [message, setMessage] = useState('');
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const uploadFile = async (data) => {
         try {
             const responce = await axios.post('/file/upload', data);
@@ -41,10 +55,12 @@ const Footer = ({file, setFile, setImage, Image}) => {
             }
         }
         getImage();
-    }, [file]);
+    }, [file, uploadFile]);
 
     const sendMessage = async (e) => {
         e.preventDefault();
+        if(message === '')
+            return;
         const body = {
             chatId : chat._id,
             senderId : account.sub,
@@ -94,6 +110,7 @@ const Footer = ({file, setFile, setImage, Image}) => {
                     />
                 </form>
             </Box>
+            <SendButton onClick={sendMessage} />
         </Container>
     )
 }

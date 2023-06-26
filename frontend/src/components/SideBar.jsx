@@ -4,7 +4,7 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import SingleChat from './SingleChat';
 import axios from '../Axios.js';
 import React, { useState, useEffect, useContext } from 'react';
-import AccountContext from '../context/AccountDetails';
+import AccountContext from '../context/accountContext/AccountDetails';
 const SideBar = () => {
     const [users, setUsers] = useState([]);
     const { account } = useContext(AccountContext);
