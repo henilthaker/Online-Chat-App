@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { useContext } from 'react';
-import AccountContext from '../../context/AccountDetails';
+import AccountContext from '../../context/accountContext/AccountDetails';
 
 //components
 import ChatHeader from './ChatHeader';

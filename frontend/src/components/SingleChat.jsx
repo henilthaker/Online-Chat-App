@@ -1,7 +1,7 @@
 import '../styles/singlechat.css';
 import axios from '../Axios.js';
 import { useContext, useState, useEffect } from 'react';
-import AccountContext from '../context/AccountDetails';
+import AccountContext from '../context/accountContext/AccountDetails';
 const SingleChat = ({ user }) => {
     const [cur_chat, setCurChat] = useState({});
     const { account, setPerson, setChat } = useContext(AccountContext);

@@ -3,7 +3,7 @@ import { Box, InputBase, styled } from '@mui/material';
 import '../../styles/chat.css'
 import { useState, useContext, useEffect } from 'react';
 import axios from '../../Axios.js'
-import AccountContext from '../../context/AccountDetails';
+import AccountContext from '../../context/accountContext/AccountDetails';
 import SendIcon from '@mui/icons-material/Send';
 
 const Container = styled(Box)`
@@ -35,6 +35,7 @@ const Footer = ({file, setFile, setImage, Image}) => {
     const { account, person, chat } = useContext(AccountContext);
     const [message, setMessage] = useState('');
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const uploadFile = async (data) => {
         try {
             const responce = await axios.post('/file/upload', data);
@@ -54,7 +55,7 @@ const Footer = ({file, setFile, setImage, Image}) => {
             }
         }
         getImage();
-    }, [file]);
+    }, [file, uploadFile]);
 
     const sendMessage = async (e) => {
         e.preventDefault();

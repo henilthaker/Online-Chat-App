@@ -1,5 +1,5 @@
 import { Box, styled } from '@mui/material';
-import AccountContext from '../../context/AccountDetails';
+import AccountContext from '../../context/accountContext/AccountDetails';
 import React, { useState, useContext, useEffect } from 'react';
 import axios from '../../Axios.js';
 import '../../styles/message.css';
@@ -7,6 +7,7 @@ import { PictureAsPdf, GetAppRounded } from '@mui/icons-material';
 
 //components
 import Footer from './Footer';
+import MessageContex from '../../context/messageContext/messageContext';
 
 const Wrapper = styled(Box)`
     background-image: url(${'https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png'});
@@ -44,7 +45,7 @@ const formatDate = (date) => {
 
 const Messages = () => {
     const { account, chat } = useContext(AccountContext);
-    const [messages, setMessages] = useState([]);
+    const { messages, setMessages } = useContext(MessageContex);
     const [file, setFile] = useState();
     const [Image, setImage] = useState('');
 
@@ -81,7 +82,7 @@ const Messages = () => {
         };
 
         getMessages();
-    }, [chat]);
+    }, [chat, setMessages]);
 
     return (
         <Wrapper>

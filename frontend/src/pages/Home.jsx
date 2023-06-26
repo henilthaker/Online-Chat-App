@@ -2,7 +2,7 @@ import SideBar from "../components/SideBar";
 import ChatBox from "../components/chat/ChatBox";
 import EmptyChat from "../components/chat/emptychat";
 import { useContext } from "react";
-import AccountContext from "../context/AccountDetails";
+import AccountContext from "../context/accountContext/AccountDetails";
 import '../styles/home.css';
 const Home = () => {
     const { person } = useContext(AccountContext);
