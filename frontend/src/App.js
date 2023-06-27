@@ -30,7 +30,7 @@ function App() {
         puhser.unbind_all();
         puhser.unsubscribe();
       }
-  },[messages, setMessages, setUsers, users]);
+  },[messages, users]);
 
   return (
     <div className="app">
