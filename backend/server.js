@@ -12,7 +12,7 @@ const app = express();
 const pusher = new Pusher({
     appId: "1625017",
     key: "8de87b75a39cda78cd32",
-    secret: "32259869f1f801fa1bbe",
+    secret: process.env.PUSHER_SECRET,
     cluster: "ap2",
     useTLS: true
 });
