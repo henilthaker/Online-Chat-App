@@ -9,7 +9,7 @@ import Pusher from 'pusher-js';
 import MessageContex from "./context/messageContext/messageContext";
 //APP
 function App() {
-  const { account } = useContext(AccountContext);
+  const { account, setUsers, users } = useContext(AccountContext);
   const { messages, setMessages } = useContext(MessageContex);
 
   useEffect(() => {
@@ -22,11 +22,16 @@ function App() {
         setMessages([...messages, newMessage]);
       });
 
+      const userChannel = puhser.subscribe('users');
+      userChannel.bind('inserted', (newUser) => {
+        setUsers([...users, newUser]);
+      });
+
       return()=>{
         puhser.unbind_all();
         puhser.unsubscribe();
       }
-  },[messages, setMessages]);
+  },[messages, setMessages, setUsers, users]);
 
   return (
     <div className="app">

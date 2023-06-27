@@ -58,4 +58,15 @@ db.once('open', () => {
             console.log('Error triggering pusher');
         }
     })
+
+    const user_collection = db.collection('users');
+    const change_stream_user = user_collection.watch();
+    change_stream_user.on('change', (change) => {
+        if (change.operationType === 'insert') {
+            const user_details = change.fullDocument;
+            pusher.trigger('users', 'inserted', user_details);
+        }else{
+            console.log('Error triggering pusher');
+        }
+    })
 })
