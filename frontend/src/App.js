@@ -22,8 +22,7 @@ function App() {
         setMessages([...messages, newMessage]);
       });
 
-      const userChannel = puhser.subscribe('users');
-      userChannel.bind('inserted', (newUser) => {
+      channel.bind('loggedIn', (newUser) => {
         setUsers([...users, newUser]);
       });
 
