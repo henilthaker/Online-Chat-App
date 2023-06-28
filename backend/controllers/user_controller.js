@@ -49,5 +49,4 @@ module.exports = {
 const db = mongoose.connection;
 db.once('open', () => {
     const msg_collection = db.collection('users');
-    const change_stream = msg_collection.watch();
 })
