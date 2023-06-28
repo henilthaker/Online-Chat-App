@@ -17,7 +17,7 @@ const Wrapper = styled(Box)`
 `;
 
 const Component = styled(Box)`
-    height: 69vh;
+    height: 80vh;
     overflow-y: scroll;
 `;
 
@@ -153,7 +153,7 @@ const Messages = () => {
                     )
                 })}
             </Component>
-            <Footer file={file} setFile={setFile} setImage={setImage} Image={Image} />
+            <Footer file={file} setFile={setFile} setImage={setImage} Image={Image}/>
         </Wrapper>
     )
 }

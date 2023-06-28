@@ -7,7 +7,7 @@ import '../styles/home.css';
 const Home = () => {
     const { person } = useContext(AccountContext);
     return (
-        <div className="home">
+        <div className="home -mt-1">
             <div className="home_body">
                 <SideBar />
                 {Object.keys(person).length === 0 ? <EmptyChat /> : <ChatBox />}
