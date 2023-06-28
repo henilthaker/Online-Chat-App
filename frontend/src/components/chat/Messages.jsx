@@ -97,8 +97,6 @@ const Messages = () => {
         channel.bind('inserted', (newMessage) => {
             // this useEffect is ran multiple times so 2nd condition in if is to avoid this
             if (newMessage.chatId === chat._id) {
-                console.log(chat.last_message);
-                console.log(newMessage.text);
                 dispatch({ type: 'ADD_MESSAGE', payload: newMessage });
                 setChat(prevChat => {
                     return { ...prevChat, last_message: newMessage.text };

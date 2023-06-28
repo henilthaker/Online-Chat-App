@@ -1,6 +1,7 @@
 //imports
 const User = require('../models/user_model.js');
 const Pusher = require('pusher');
+const mongoose = require('mongoose');
 require('dotenv').config();
 
 const pusher = new Pusher({
@@ -44,3 +45,9 @@ module.exports = {
     addUser,
     getUser
 }
+
+const db = mongoose.connection;
+db.once('open', () => {
+    const msg_collection = db.collection('users');
+    const change_stream = msg_collection.watch();
+})
