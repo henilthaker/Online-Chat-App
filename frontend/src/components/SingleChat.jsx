@@ -4,7 +4,7 @@ import { useContext, useState, useEffect } from 'react';
 import AccountContext from '../context/accountContext/AccountDetails';
 const SingleChat = ({ user }) => {
     const [cur_chat, setCurChat] = useState({});
-    const { account, setPerson, setChat } = useContext(AccountContext);
+    const { account, setPerson, setChat, chat } = useContext(AccountContext);
 
     useEffect(() => {
         const getChat = async () => {
@@ -18,7 +18,12 @@ const SingleChat = ({ user }) => {
         };
 
         getChat();
-    },[account.sub, user.sub]);
+    }, [account.sub, user.sub]);
+
+    useEffect(() => {
+        if (cur_chat._id === chat._id)
+            setCurChat(prevChat => ({ ...prevChat, last_message: chat.last_message }));
+    }, [chat])
 
     const createChat = async (e) => {
         e.preventDefault();

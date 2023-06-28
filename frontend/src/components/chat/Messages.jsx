@@ -4,10 +4,12 @@ import React, { useState, useContext, useEffect, useRef } from 'react';
 import axios from '../../Axios.js';
 import '../../styles/message.css';
 import { PictureAsPdf, GetAppRounded } from '@mui/icons-material';
+import Pusher from 'pusher-js';
+
 
 //components
 import Footer from './Footer';
-import MessageContex from '../../context/messageContext/messageContext';
+import { MessageContex } from '../../context/messageContext/messageContext';
 
 const Wrapper = styled(Box)`
     background-image: url(${'https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png'});
@@ -45,8 +47,8 @@ const formatDate = (date) => {
 
 const Messages = () => {
     const scroll_ref = useRef(null);
-    const { account, chat } = useContext(AccountContext);
-    const { messages, setMessages } = useContext(MessageContex);
+    const { account, chat, setChat } = useContext(AccountContext);
+    const { messages, dispatch } = useContext(MessageContex);
     const [file, setFile] = useState();
     const [Image, setImage] = useState('');
 
@@ -72,22 +74,48 @@ const Messages = () => {
     }
 
     let cur_date = '';
-    useEffect(() => {
-        const getMessages = async () => {
-            try {
-                const response = await axios.get(`/message/get/${chat._id}`);
-                setMessages(response.data);
-            } catch (error) {
-                console.log(error);
-            }
-        };
 
+    const getMessages = async () => {
+        try {
+            const response = await axios.get(`/message/get/${chat._id}`);
+            dispatch({ type: 'SET_MESSAGES', payload: response.data });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
         getMessages();
     }, [chat]);
 
     useEffect(() => {
-        scroll_ref.current?.scrollTo(0, scroll_ref.current.clientHeight);
-      }, [messages]);
+        const puhser = new Pusher('8de87b75a39cda78cd32', {
+            cluster: 'ap2'
+        });
+
+        const channel = puhser.subscribe('messages');
+        channel.bind('inserted', (newMessage) => {
+            // this useEffect is ran multiple times so 2nd condition in if is to avoid this
+            if (newMessage.chatId === chat._id) {
+                console.log(chat.last_message);
+                console.log(newMessage.text);
+                dispatch({ type: 'ADD_MESSAGE', payload: newMessage });
+                setChat(prevChat => {
+                    return { ...prevChat, last_message: newMessage.text };
+                });
+                console.log(chat.last_message);
+            }
+        });
+
+        return () => {
+            puhser.unbind_all();
+            puhser.unsubscribe();
+        }
+    }, [messages]);
+
+    useEffect(() => {
+        scroll_ref.current?.scrollTo(0, scroll_ref.current.scrollHeight);
+    }, [messages]);
 
     return (
         <Wrapper>

@@ -5,33 +5,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useContext, useEffect } from "react";
 import AccountContext from "./context/accountContext/AccountDetails";
 import Home from "./pages/Home.jsx";
-import Pusher from 'pusher-js';
-import MessageContex from "./context/messageContext/messageContext";
+import {MessageContex} from "./context/messageContext/messageContext";
 //APP
 function App() {
   const { account, setUsers, users } = useContext(AccountContext);
-  const { messages, setMessages } = useContext(MessageContex);
-
-  useEffect(() => {
-      const puhser = new Pusher('8de87b75a39cda78cd32', {
-        cluster: 'ap2'
-      });
-
-      const channel = puhser.subscribe('messages');
-      channel.bind('inserted', (newMessage) => {
-        setMessages([...messages, newMessage]);
-      });
-
-      const userChannel = puhser.subscribe('users');
-      userChannel.bind('inserted', (newUser) => {
-        setUsers([...users, newUser]);
-      });
-
-      return()=>{
-        puhser.unbind_all();
-        puhser.unsubscribe();
-      }
-  },[messages, users]);
+  // const { messages, setMessages } = useContext(MessageContex);
 
   return (
     <div className="app">

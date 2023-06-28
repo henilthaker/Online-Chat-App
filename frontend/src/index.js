@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import AccountState from "./context/accountContext/AccountState";
-import MessageState from './context/messageContext/messageState';
+import {MessageState} from './context/messageContext/messageContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
