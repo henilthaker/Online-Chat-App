@@ -10,8 +10,8 @@ const Image = styled('img')({
 const EmptyChat = () => {
     
     return (
-        <Box className='Component text-center min-w-[66vw]'>
-            <Image src={emptyChatImage} alt="empty" className="mx-auto mb-10"/>
+        <Box className='Component text-center min-w-[75vw]'>
+            <Image src={emptyChatImage} alt="empty" className="mx-auto mb-10 mt-20"/>
             <Box className='Container'>
                 <Typography className='Title'>Chat Online</Typography>
                 <Typography className='SubTitle'>Now send and receive messages with this app</Typography>

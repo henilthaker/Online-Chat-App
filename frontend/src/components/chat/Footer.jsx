@@ -110,7 +110,7 @@ const Footer = ({file, setFile, setImage, Image}) => {
                     />
                 </form>
             </Box>
-            <SendButton onClick={sendMessage} />
+            <p className='text-white'><SendButton onClick={sendMessage} /></p>
         </Container>
     )
 }

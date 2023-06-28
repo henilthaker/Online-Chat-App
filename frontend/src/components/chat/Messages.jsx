@@ -1,13 +1,15 @@
 import { Box, styled } from '@mui/material';
 import AccountContext from '../../context/accountContext/AccountDetails';
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import axios from '../../Axios.js';
 import '../../styles/message.css';
 import { PictureAsPdf, GetAppRounded } from '@mui/icons-material';
+import Pusher from 'pusher-js';
+
 
 //components
 import Footer from './Footer';
-import MessageContex from '../../context/messageContext/messageContext';
+import { MessageContex } from '../../context/messageContext/messageContext';
 
 const Wrapper = styled(Box)`
     background-image: url(${'https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png'});
@@ -15,7 +17,7 @@ const Wrapper = styled(Box)`
 `;
 
 const Component = styled(Box)`
-    height: 69vh;
+    height: 80vh;
     overflow-y: scroll;
 `;
 
@@ -44,49 +46,78 @@ const formatDate = (date) => {
 }
 
 const Messages = () => {
-    const { account, chat } = useContext(AccountContext);
-    const { messages, setMessages } = useContext(MessageContex);
+    const scroll_ref = useRef(null);
+    const { account, chat, setChat } = useContext(AccountContext);
+    const { messages, dispatch } = useContext(MessageContex);
     const [file, setFile] = useState();
     const [Image, setImage] = useState('');
 
-    const downLoadMedia = (e, url) => { 
+    const downLoadMedia = (e, url) => {
         e.preventDefault();
         try {
             fetch(url)
-            .then(res => res.blob())
-            .then(blob => {
-                const url2 = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = url2;
+                .then(res => res.blob())
+                .then(blob => {
+                    const url2 = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url2;
 
-                a.download = url.split('/').pop().split('_')[0].split('file')[0];
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url2);
-            });
+                    a.download = url.split('/').pop().split('_')[0].split('file')[0];
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url2);
+                });
         } catch (error) {
             console.log(error);
         }
     }
 
     let cur_date = '';
-    useEffect(() => {
-        const getMessages = async () => {
-            try {
-                const response = await axios.get(`/message/get/${chat._id}`);
-                setMessages(response.data);
-            } catch (error) {
-                console.log(error);
-            }
-        };
 
+    const getMessages = async () => {
+        try {
+            const response = await axios.get(`/message/get/${chat._id}`);
+            dispatch({ type: 'SET_MESSAGES', payload: response.data });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
         getMessages();
-    }, [chat, setMessages]);
+    }, [chat]);
+
+    useEffect(() => {
+        const puhser = new Pusher('8de87b75a39cda78cd32', {
+            cluster: 'ap2'
+        });
+
+        const channel = puhser.subscribe('messages');
+        channel.bind('inserted', (newMessage) => {
+            // this useEffect is ran multiple times so 2nd condition in if is to avoid this
+            if (newMessage.chatId === chat._id) {
+                dispatch({ type: 'ADD_MESSAGE', payload: newMessage });
+                setChat(prevChat => {
+                    return { ...prevChat, last_message: newMessage.text };
+                });
+                console.log(chat.last_message);
+            }
+        });
+
+        return () => {
+            puhser.unbind_all();
+            puhser.unsubscribe();
+        }
+    }, [messages]);
+
+    useEffect(() => {
+        scroll_ref.current?.scrollTo(0, scroll_ref.current.scrollHeight);
+    }, [messages]);
 
     return (
         <Wrapper>
-            <Component>
+            <Component ref={scroll_ref}>
                 {messages && messages.map(message => {
                     const message_day = getDay(message.updatedAt);
                     let flag = true;
@@ -103,26 +134,26 @@ const Messages = () => {
                             }
                             <div className="messageContainer">
                                 {
-                                    message.type === 'file' ?  
+                                    message.type === 'file' ?
                                         <Box className={`messageBox relative w-fit ${message.senderId === account.sub && 'sentMessage'}`}>
-                                            {(message.text.includes('.jpg') || message.text.includes('.png')) ? <Box className='relative'><img src={message.text} alt='img' className='rounded-sm pr-2'/><GetAppRounded  onClick={(e)=> downLoadMedia(e,message.text)} className='text-gray-500 absolute bottom-0 right-2'/> </Box>: <Box>
-                                            <p className='flex gap-2'><PictureAsPdf className='text-red-500'/>
-                                            <p className='pl-1 pr-8'>{message.text.split('/').pop().split('_')[0].split('file')[0]}</p></p>
-                                            <GetAppRounded onClick={(e)=>{ downLoadMedia(e,message.text)}} className='text-gray-500 absolute bottom-0 right-0'/>
+                                            {(message.text.includes('.jpg') || message.text.includes('.png')) ? <Box className='relative'><img src={message.text} alt='img' className='rounded-sm pr-2' /><GetAppRounded onClick={(e) => downLoadMedia(e, message.text)} className='text-gray-500 absolute bottom-0 right-2' /> </Box> : <Box>
+                                                <p className='flex gap-2'><PictureAsPdf className='text-red-500' />
+                                                    <p className='pl-1 pr-8'>{message.text.split('/').pop().split('_')[0].split('file')[0]}</p></p>
+                                                <GetAppRounded onClick={(e) => { downLoadMedia(e, message.text) }} className='text-gray-500 absolute bottom-0 right-0' />
                                             </Box>}
-                                        </Box> 
-                                    : 
-                                    <Box className={`messageBox relative w-fit ${message.senderId === account.sub && 'sentMessage'}`}>
-                                        {message.text}
-                                        <span className="time">{formatDate(message.updatedAt)}</span>
-                                    </Box>
+                                        </Box>
+                                        :
+                                        <Box className={`messageBox relative w-fit ${message.senderId === account.sub && 'sentMessage'}`}>
+                                            {message.text}
+                                            <span className="time">{formatDate(message.updatedAt)}</span>
+                                        </Box>
                                 }
                             </div>
                         </ React.Fragment>
                     )
                 })}
             </Component>
-            <Footer file={file} setFile={setFile} setImage={setImage} Image={Image} />
+            <Footer file={file} setFile={setFile} setImage={setImage} Image={Image}/>
         </Wrapper>
     )
 }

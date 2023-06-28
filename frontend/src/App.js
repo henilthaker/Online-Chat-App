@@ -2,36 +2,32 @@ import SignUp from "./components/SignUp";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useContext, useEffect } from "react";
+import { useContext, useEffect} from "react";
 import AccountContext from "./context/accountContext/AccountDetails";
 import Home from "./pages/Home.jsx";
 import Pusher from 'pusher-js';
-import MessageContex from "./context/messageContext/messageContext";
 //APP
 function App() {
   const { account, setUsers, users } = useContext(AccountContext);
-  const { messages, setMessages } = useContext(MessageContex);
 
   useEffect(() => {
-      const puhser = new Pusher('8de87b75a39cda78cd32', {
+      const pusher = new Pusher('8de87b75a39cda78cd32', {
         cluster: 'ap2'
       });
 
-      const channel = puhser.subscribe('messages');
-      channel.bind('inserted', (newMessage) => {
-        setMessages([...messages, newMessage]);
+      const channel = pusher.subscribe('users');
+      channel.bind('loggedIn', (newUser) => {
+        setUsers([...users, newUser])
       });
 
-      const userChannel = puhser.subscribe('users');
-      userChannel.bind('inserted', (newUser) => {
-        setUsers([...users, newUser]);
-      });
+      console.log(users);
 
-      return()=>{
-        puhser.unbind_all();
-        puhser.unsubscribe();
+      return () => {
+        channel.unbind_all();
+        channel.unsubscribe();
       }
-  },[messages, setMessages, setUsers, users]);
+      
+  },[users, setUsers]);
 
   return (
     <div className="app">
