@@ -20,8 +20,6 @@ function App() {
         setUsers([...users, newUser])
       });
 
-      console.log(users);
-
       return () => {
         channel.unbind_all();
         channel.unsubscribe();
