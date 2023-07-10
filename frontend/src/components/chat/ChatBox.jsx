@@ -9,7 +9,7 @@ import Messages from './Messages';
 const ChatBox = () => {
     const { person } = useContext(AccountContext);
     return (
-        <Box style={{height: '75%'}} className="min-w-[75vw]">
+        <Box className="min-w-[75vw]">
             <ChatHeader person={person} />
             <Messages />
         </Box>

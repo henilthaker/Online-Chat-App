@@ -45,8 +45,3 @@ module.exports = {
     addUser,
     getUser
 }
-
-const db = mongoose.connection;
-db.once('open', () => {
-    const msg_collection = db.collection('users');
-})
