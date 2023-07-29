@@ -14,6 +14,12 @@
     overflow-wrap: break-word;
 }
 
+.messageBox::after{
+    content:"";
+    display: block;
+    clear:both;
+}
+
 .sentMessage{
     background-color: rgb(181, 249, 207);
     display: block;
