@@ -17,7 +17,7 @@ const ChatHeader = ({ person }) => {
             <Image src={person.picture} alt="display picture" />     
             <Box>
                 <Typography className='Name'>{person.name}</Typography>
-                <Typography className='Status'>{ users.find( user => user.sub === person.sub) ? 'Online' : 'Offline'}</Typography>    
+                {/* <Typography className='Status'>{ users.find( user => user.sub === person.sub) ? 'Online' : 'Offline'}</Typography>     */}
             </Box>   
         </Box>
     )
