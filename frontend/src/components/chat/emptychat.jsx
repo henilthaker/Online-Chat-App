@@ -1,10 +1,10 @@
-import { Box, styled, Typography, Divider } from '@mui/material';
+import { Box, styled, Typography} from '@mui/material';
 import '../../styles/empthchat.css';
-import emptyChatImage from '../../assets/chat.jpg';
+import emptyChatImage from '../../assets/lock.png';
 
 const Image = styled('img')({
     // marginTop: 100,
-    width: 400
+    width: 200
 })
 
 const EmptyChat = () => {
@@ -13,10 +13,7 @@ const EmptyChat = () => {
         <Box className='Component text-center min-w-[75vw]'>
             <Image src={emptyChatImage} alt="empty" className="mx-auto mb-10 mt-20"/>
             <Box className='Container'>
-                <Typography className='Title'>Chat Online</Typography>
-                <Typography className='SubTitle'>Now send and receive messages with this app</Typography>
-                <Typography className='SubTitle'>Use chat app with many accounts </Typography>
-                <Divider className='StyleDivider' />
+                <Typography className='Title'>Click on a chat to start messaging</Typography>
             </Box>
         </Box>
     )
