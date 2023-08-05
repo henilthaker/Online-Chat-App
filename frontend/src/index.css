@@ -18,3 +18,30 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.navbar {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  max-width: 600px;
+  margin: 0 auto;
+  border-bottom: 1px solid rgb(200, 200, 200);
+}
+.navbar h2 {
+  color: #128C7E;
+  font-size: 1.5rem !important;
+  font-weight: 600 !important;
+}
+.navbar .links {
+  margin-left: auto;
+}
+.navbar a {
+  margin-left: 16px;
+  text-decoration: none;
+  padding: 6px;
+  font-size: 1.2rem;
+  font-weight:450;
+}
+.navbar a:hover {
+  color: #128C7E;
+}

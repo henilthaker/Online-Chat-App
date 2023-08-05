@@ -4,6 +4,8 @@ import AccountContext from "./context/accountContext/AccountDetails";
 import Home from "./pages/Home.jsx";
 import LandingPage from "./pages/LandingPage";
 import Pusher from 'pusher-js';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import ChatLogin from './pages/ChatLogin';
 //APP
 function App() {
   const { account, setUsers, users } = useContext(AccountContext);
@@ -26,13 +28,15 @@ function App() {
   }, [users, setUsers]);
 
   return (
-    <div className="app">
-      {
-        account ? <Home />
-          :
-          <LandingPage />
-      }
-    </div>
+    <BrowserRouter>
+      <div className="app">
+        <Routes>
+          <Route exact path="/" element={<LandingPage />} />
+          <Route exact path="/chats" element={account ? <Home />:<ChatLogin />} />
+          <Route exact path="/chats" element={<LandingPage />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 
