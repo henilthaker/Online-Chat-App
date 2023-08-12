@@ -41,13 +41,14 @@ const RoomPage = () => {
             id:uuidv4()
         }
         sessionStorage.setItem('user', JSON.stringify(user));
-        sessionStorage.setItem('room', JSON.stringify(room));
+        // sessionStorage.setItem('room', JSON.stringify(room));
         try {
             const response = await axios.post(`/joinRoom`, {...user, roomId: room.id}, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
+            sessionStorage.setItem('room', JSON.stringify(response.data));
         } catch (error) {
             console.log(error);
         }

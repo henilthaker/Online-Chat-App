@@ -7,7 +7,7 @@ const Navbar = () => {
                 <h2>Chatify</h2>
             </Link>
             <div className="links">
-                <Link to="/anyonymous-rooms">Anonyms Rooms</Link>
+                <Link to="/anonymous-rooms">Anonyms Rooms</Link>
                 <Link to="/chats">Chats</Link>
             </div>
         </nav>

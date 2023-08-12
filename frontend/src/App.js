@@ -35,7 +35,7 @@ function App() {
         <Routes>
           <Route exact path="/" element={<LandingPage />} />
           <Route exact path="/chats" element={account ? <Home />:<ChatLogin />} />
-          <Route exact path="/anyonymous-rooms" element={<RoomPage />} />
+          <Route exact path="/anonymous-rooms" element={<RoomPage />} />
           <Route exact path="/room/:id" element={<SingleRoom/>} />
         </Routes>
       </div>

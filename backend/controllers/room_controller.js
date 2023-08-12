@@ -30,8 +30,18 @@ const newRoomMessage = (req,res)=>{
     res.status(200).json('message sent successfully');
 }
 
-const addUser = (req, res)=>{
-    res.status(200).json('user added successfully');
+const addRoomUser = (req, res)=>{
+    const requiredRoom = rooms.filter(room=>room.id === req.body.roomId)[0];
+    requiredRoom.addUser(req.body);
+    pusher.trigger('user-channel', 'joined', requiredRoom);
+    res.status(200).json(requiredRoom);
 }
 
-module.exports = {getAllRooms, createRoom, newRoomMessage, addUser};
+const removeRoomUser = (req, res)=>{
+    const requiredRoom = rooms.filter(room=>room.id === req.body.roomId)[0];
+    requiredRoom.removeUser(req.body);
+    pusher.trigger('user-channel', 'left', requiredRoom);
+    res.status(200).json('user removed successfully');
+}
+
+module.exports = {getAllRooms, createRoom, newRoomMessage, addRoomUser, removeRoomUser};
