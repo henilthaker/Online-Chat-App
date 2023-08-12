@@ -10,14 +10,16 @@ const Image = styled('img')({
 const LandingPage = () => {
 
     return (
-        <Box className='Component text-center min-w-[75vw]'>
+        <div>
             <Navbar />
-            <Image src={bgImage} alt="empty" className="mx-auto mt-10" />
-            <Box className='Container'>
-                <Typography className='Title'>Welcome to Chatify</Typography>
-                <Typography className='SubTitle'>Connect to your friends and family seamlessly with Chatify</Typography>
+            <Box className='Component text-center min-w-[75vw]'>
+                <Image src={bgImage} alt="empty" className="mx-auto mt-10" />
+                <Box className='Container'>
+                    <Typography className='Title'>Welcome to Chatify</Typography>
+                    <Typography className='SubTitle'>Connect to your friends and family seamlessly with Chatify</Typography>
+                </Box>
             </Box>
-        </Box>
+        </div>
 
     )
 }
