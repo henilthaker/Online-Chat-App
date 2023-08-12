@@ -1,6 +1,8 @@
 require('dotenv').config();
 const Room = require('../models/room_model');
 const Pusher = require('pusher');
+const { v4: uuidv4 } = require("uuid");
+
 
 const pusher = new Pusher({
     appId: "1625017",
@@ -28,4 +30,8 @@ const newRoomMessage = (req,res)=>{
     res.status(200).json('message sent successfully');
 }
 
-module.exports = {getAllRooms, createRoom, newRoomMessage};
+const addUser = (req, res)=>{
+    res.status(200).json('user added successfully');
+}
+
+module.exports = {getAllRooms, createRoom, newRoomMessage, addUser};

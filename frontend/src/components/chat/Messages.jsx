@@ -185,13 +185,16 @@ const Messages = ({ type }) => {
                             <React.Fragment key={message._id}>
                                 <div className="messageContainer">
                                     <Box className={`messageBox relative w-fit ${message.senderId === user.id && 'sentMessage'}`}>
+                                        <div class="senderName">{message.senderId !== user.id && message.senderName}</div>
                                         {message.text}
                                         <span className="time">{formatDate(message.updatedAt)}</span>
                                     </Box>
                                 </div>
                             </React.Fragment>
                         );
-                    })}
+                    }
+                    )
+                    }
                 </Component>
                 <Footer file={file} setFile={setFile} setImage={setImage} Image={Image} type="room" />
             </Wrapper>

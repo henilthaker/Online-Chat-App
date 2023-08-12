@@ -91,6 +91,7 @@ const Footer = ({ file, setFile, setImage, Image, type }) => {
             const body = {
                 roomId: room.id,
                 senderId: user.id,
+                senderName: user.name,
                 text: message,
                 type: 'text',
                 updatedAt: new Date(),

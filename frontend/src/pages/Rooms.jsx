@@ -34,16 +34,23 @@ const RoomPage = () => {
         console.log('Avatar Name:', avatarName);
         console.log('Interests:', interests);
     };
-    const goToRoom = (room)=>{
+    const goToRoom = async(room)=>{
         const avatarName = prompt("Enter your avatar name");
         const user={
             name:avatarName,
             id:uuidv4()
         }
-        console.log(user);
-        console.log(room);
         sessionStorage.setItem('user', JSON.stringify(user));
         sessionStorage.setItem('room', JSON.stringify(room));
+        try {
+            const response = await axios.post(`/joinRoom`, {...user, roomId: room.id}, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+        } catch (error) {
+            console.log(error);
+        }
         window.location.href=`/room/${room.id}`;
     }
     useEffect(() => {
