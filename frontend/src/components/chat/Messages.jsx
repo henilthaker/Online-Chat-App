@@ -7,6 +7,7 @@ import { PictureAsPdf, GetAppRounded } from '@mui/icons-material';
 import Pusher from 'pusher-js';
 
 
+
 //components
 import Footer from './Footer';
 import { MessageContex } from '../../context/messageContext/messageContext';
@@ -45,7 +46,7 @@ const formatDate = (date) => {
     return `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}`;
 }
 
-const Messages = () => {
+const Messages = ({ type }) => {
     const scroll_ref = useRef(null);
     const { account, chat, setChat } = useContext(AccountContext);
     const { messages, dispatch } = useContext(MessageContex);
@@ -85,29 +86,43 @@ const Messages = () => {
     };
 
     useEffect(() => {
-        getMessages();
+        if (type === "chat")
+            getMessages();
     }, [chat]);
 
     useEffect(() => {
-        const puhser = new Pusher('8de87b75a39cda78cd32', {
+        const pusher = new Pusher('8de87b75a39cda78cd32', {
             cluster: 'ap2'
         });
 
-        const channel = puhser.subscribe('messages');
-        channel.bind('inserted', (newMessage) => {
-            // this useEffect is ran multiple times so 2nd condition in if is to avoid this
-            if (newMessage.chatId === chat._id) {
-                dispatch({ type: 'ADD_MESSAGE', payload: newMessage });
-                setChat(prevChat => {
-                    return { ...prevChat, last_message: newMessage.text };
-                });
-                console.log(chat.last_message);
-            }
-        });
+        if (type === "chat") {
+            const channel = pusher.subscribe('messages');
+            channel.bind('inserted', (newMessage) => {
+                // this useEffect is ran multiple times so 2nd condition in if is to avoid this
+                if (newMessage.chatId === chat._id) {
+                    dispatch({ type: 'ADD_MESSAGE', payload: newMessage });
+                    setChat(prevChat => {
+                        return { ...prevChat, last_message: newMessage.text };
+                    });
+                    console.log(chat.last_message);
+                }
+            });
+        }
+
+        else {
+            // const user = JSON.parse(sessionStorage.getItem('user'));
+            const room = JSON.parse(sessionStorage.getItem('room'));
+            const channel = pusher.subscribe('room-messages');
+            channel.bind('inserted', (newMessage) => {
+                if (newMessage.roomId === room.id) {
+                    dispatch({ type: 'ADD_MESSAGE', payload: newMessage });
+                }
+            });
+        }
 
         return () => {
-            puhser.unbind_all();
-            puhser.unsubscribe();
+            pusher.unbind_all();
+            pusher.unsubscribe();
         }
     }, [messages]);
 
@@ -115,47 +130,73 @@ const Messages = () => {
         scroll_ref.current?.scrollTo(0, scroll_ref.current.scrollHeight);
     }, [messages]);
 
-    return (
-        <Wrapper>
-            <Component ref={scroll_ref}>
-                {messages && messages.map(message => {
-                    const message_day = getDay(message.updatedAt);
-                    let flag = true;
-                    if (message_day !== cur_date) {
-                        cur_date = message_day;
-                        flag = false;
-                    }
-                    return (
-                        <React.Fragment key={message._id}>
-                            {
-                                !flag && <Box className="date">
-                                    {message_day}
-                                </Box>
-                            }
-                            <div className="messageContainer">
+    if (type === "chat") {
+        console.log(type)
+        return (
+            <Wrapper>
+                <Component ref={scroll_ref}>
+                    {messages && messages.map(message => {
+                        const message_day = getDay(message.updatedAt);
+                        let flag = true;
+                        if (message_day !== cur_date) {
+                            cur_date = message_day;
+                            flag = false;
+                        }
+                        return (
+                            <React.Fragment key={message._id}>
                                 {
-                                    message.type === 'file' ?
-                                        <Box className={`messageBox relative w-fit ${message.senderId === account.sub && 'sentMessage'}`}>
-                                            {(message.text.includes('.jpg') || message.text.includes('.png')) ? <Box className='relative'><img src={message.text} alt='img' className='rounded-sm pr-2' /><GetAppRounded onClick={(e) => downLoadMedia(e, message.text)} className='text-gray-500 absolute bottom-0 right-2' /> </Box> : <Box>
-                                                <p className='flex gap-2'><PictureAsPdf className='text-red-500' />
-                                                    <p className='pl-1 pr-8'>{message.text.split('/').pop().split('_')[0].split('file')[0]}</p></p>
-                                                <GetAppRounded onClick={(e) => { downLoadMedia(e, message.text) }} className='text-gray-500 absolute bottom-0 right-0' />
-                                            </Box>}
-                                        </Box>
-                                        :
-                                        <Box className={`messageBox relative w-fit ${message.senderId === account.sub && 'sentMessage'}`}>
-                                            {message.text}
-                                            <span className="time">{formatDate(message.updatedAt)}</span>
-                                        </Box>
+                                    !flag && <Box className="date">
+                                        {message_day}
+                                    </Box>
                                 }
-                            </div>
-                        </ React.Fragment>
-                    )
-                })}
-            </Component>
-            <Footer file={file} setFile={setFile} setImage={setImage} Image={Image}/>
-        </Wrapper>
-    )
+                                <div className="messageContainer">
+                                    {
+                                        message.type === 'file' ?
+                                            <Box className={`messageBox relative w-fit ${message.senderId === account.sub && 'sentMessage'}`}>
+                                                {(message.text.includes('.jpg') || message.text.includes('.png')) ? <Box className='relative'><img src={message.text} alt='img' className='rounded-sm pr-2' /><GetAppRounded onClick={(e) => downLoadMedia(e, message.text)} className='text-gray-500 absolute bottom-0 right-2' /> </Box> : <Box>
+                                                    <p className='flex gap-2'><PictureAsPdf className='text-red-500' />
+                                                        <p className='pl-1 pr-8'>{message.text.split('/').pop().split('_')[0].split('file')[0]}</p></p>
+                                                    <GetAppRounded onClick={(e) => { downLoadMedia(e, message.text) }} className='text-gray-500 absolute bottom-0 right-0' />
+                                                </Box>}
+                                            </Box>
+                                            :
+                                            <Box className={`messageBox relative w-fit ${message.senderId === account.sub && 'sentMessage'}`}>
+                                                {message.text}
+                                                <span className="time">{formatDate(message.updatedAt)}</span>
+                                            </Box>
+                                    }
+                                </div>
+                            </ React.Fragment>
+                        )
+                    })}
+                </Component>
+                <Footer file={file} setFile={setFile} setImage={setImage} Image={Image} type="chat" />
+            </Wrapper>
+        )
+    }
+    else {
+        const user = JSON.parse(sessionStorage.getItem('user'));
+        // const room = JSON.parse(sessionStorage.getItem('room'));
+        return (
+            <Wrapper>
+                <Component ref={scroll_ref}>
+                    {messages && messages.map(message => {
+                        return (
+                            <React.Fragment key={message._id}>
+                                <div className="messageContainer">
+                                    <Box className={`messageBox relative w-fit ${message.senderId === user.id && 'sentMessage'}`}>
+                                        {message.text}
+                                        <span className="time">{formatDate(message.updatedAt)}</span>
+                                    </Box>
+                                </div>
+                            </React.Fragment>
+                        );
+                    })}
+                </Component>
+                <Footer file={file} setFile={setFile} setImage={setImage} Image={Image} type="room" />
+            </Wrapper>
+        )
+    }
 }
 
 export default Messages;

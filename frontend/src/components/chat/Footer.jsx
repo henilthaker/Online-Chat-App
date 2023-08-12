@@ -1,10 +1,11 @@
-import { EmojiEmotions, AttachFile} from '@mui/icons-material';
+import { EmojiEmotions, AttachFile } from '@mui/icons-material';
 import { Box, InputBase, styled } from '@mui/material';
 import '../../styles/chat.css'
 import { useState, useContext, useEffect } from 'react';
 import axios from '../../Axios.js'
 import AccountContext from '../../context/accountContext/AccountDetails';
 import SendIcon from '@mui/icons-material/Send';
+const { v4: uuidv4 } = require("uuid");
 
 const Container = styled(Box)`
     height: 55px;
@@ -31,15 +32,14 @@ const SendButton = styled(SendIcon)`
     box-sizing: border-box;
 `;
 
-const Footer = ({file, setFile, setImage, Image}) => {
+const Footer = ({ file, setFile, setImage, Image, type }) => {
     const { account, person, chat } = useContext(AccountContext);
     const [message, setMessage] = useState('');
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const uploadFile = async (data) => {
         try {
-            const responce = await axios.post('/file/upload', data);
-            setImage(responce.data);
+            const response = await axios.post('/file/upload', data);
+            setImage(response.data);
         } catch (error) {
             console.log(error);
         }
@@ -47,7 +47,7 @@ const Footer = ({file, setFile, setImage, Image}) => {
 
     useEffect(() => {
         const getImage = async () => {
-            if(file) {
+            if (file) {
                 const data = new FormData();
                 data.append('name', file.name);
                 data.append('file', file);
@@ -59,27 +59,50 @@ const Footer = ({file, setFile, setImage, Image}) => {
 
     const sendMessage = async (e) => {
         e.preventDefault();
-        if(message === '')
-            return;
-        const body = {
-            chatId : chat._id,
-            senderId : account.sub,
-            receiverId : person.sub,
-            text : message,
-            type : 'text'
-        };
 
-        if(file){
-            body.text = Image;
-            body.type = 'file';
+        if (type === "chat") {
+            if (message === '')
+                return;
+            const body = {
+                chatId: chat._id,
+                senderId: account.sub,
+                receiverId: person.sub,
+                text: message,
+                type: 'text'
+            };
+
+            if (file) {
+                body.text = Image;
+                body.type = 'file';
+            }
+            await axios.post('/message/new', body, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            setMessage('');
         }
 
-        await axios.post('/message/new', body, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        setMessage('');
+        else {
+            const user = JSON.parse(sessionStorage.getItem('user'));
+            const room = JSON.parse(sessionStorage.getItem('room'));
+            if (message === '')
+                return;
+            const body = {
+                roomId: room.id,
+                senderId: user.id,
+                text: message,
+                type: 'text',
+                updatedAt: new Date(),
+                _id: uuidv4() // keep it _id only and nothing else coz when adding new message I am checking _id property of the message, so if I use anything else, I will need to change there also
+            };
+            await axios.post('/room-message/new', body, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            setMessage('');
+        }
     }
 
     const onFileChange = async (e) => {
@@ -99,6 +122,7 @@ const Footer = ({file, setFile, setImage, Image}) => {
                 id="fileInput"
                 style={{ display: 'none' }}
                 onChange={(e) => onFileChange(e)}
+                disabled={type === "room"}
             />
 
             <Box className="Search">

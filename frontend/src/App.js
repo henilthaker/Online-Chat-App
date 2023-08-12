@@ -6,6 +6,8 @@ import LandingPage from "./pages/LandingPage";
 import Pusher from 'pusher-js';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ChatLogin from './pages/ChatLogin';
+import RoomPage from './pages/Rooms';
+import SingleRoom from './pages/SingleRoom'
 //APP
 function App() {
   const { account, setUsers, users } = useContext(AccountContext);
@@ -33,7 +35,8 @@ function App() {
         <Routes>
           <Route exact path="/" element={<LandingPage />} />
           <Route exact path="/chats" element={account ? <Home />:<ChatLogin />} />
-          <Route exact path="/chats" element={<LandingPage />} />
+          <Route exact path="/anyonymous-rooms" element={<RoomPage />} />
+          <Route exact path="/room/:id" element={<SingleRoom/>} />
         </Routes>
       </div>
     </BrowserRouter>
