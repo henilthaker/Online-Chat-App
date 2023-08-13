@@ -4,7 +4,7 @@ import axios from "../Axios";
 import { Button, DialogActions } from "@mui/material";
 
 const { v4: uuidv4 } = require("uuid");
-const CreateRoom = ({handleClose}) => {
+const CreateRoom = ({ handleClose }) => {
     const [avatarName, setAvatarName] = useState('');
     const [tags, setTags] = useState([]);
     const [roomName, setRoomName] = useState('');
@@ -28,23 +28,25 @@ const CreateRoom = ({handleClose}) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const user = {
-            name: avatarName,
-            id: uuidv4()
-        }
-        sessionStorage.setItem('user', JSON.stringify(user));
+        if (avatarName !== '' && roomName !== '') {
+            const user = {
+                name: avatarName,
+                id: uuidv4()
+            }
+            sessionStorage.setItem('user', JSON.stringify(user));
 
-        try {
-            const response = await axios.post(`/createRoom`, { name: roomName, tags, createdBy: avatarName, creatorId: user.id }, {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            console.log(response);
-            sessionStorage.setItem('room', JSON.stringify(response.data));
-            window.location.href=`/room/${response.data.id}`
-        } catch (error) {
-            console.log(error);
+            try {
+                const response = await axios.post(`/createRoom`, { name: roomName, tags, createdBy: avatarName, creatorId: user.id }, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                console.log(response);
+                sessionStorage.setItem('room', JSON.stringify(response.data));
+                window.location.href = `/room/${response.data.id}`
+            } catch (error) {
+                console.log(error);
+            }
         }
 
     };
@@ -58,7 +60,7 @@ const CreateRoom = ({handleClose}) => {
                             type="text"
                             id="roomName"
                             value={roomName}
-                            onChange={(e) => {setRoomName(e.target.value) }}
+                            onChange={(e) => { setRoomName(e.target.value) }}
                             required
                         />
                     </div>

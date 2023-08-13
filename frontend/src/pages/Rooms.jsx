@@ -5,6 +5,7 @@ import axios from "../Axios"
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import { Dialog, DialogContent, DialogActions, Button } from '@mui/material';
 import CreateRoom from "./CreateRoom";
+import Pusher from "pusher-js";
 
 const { v4: uuidv4 } = require("uuid");
 
@@ -17,8 +18,17 @@ const RoomPage = () => {
     const handleCreateClose = ()=>{
         setCreateOpen(false);
     }
+
+    const getRooms = async () => {
+        try {
+            const response = await axios.get(`/getRooms`);
+            setRooms(response.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const goToRoom = async (room) => {
-        // const avatarName = prompt("Enter your avatar name");
         if (avatarName) {
             const user = {
                 name: avatarName,
@@ -38,18 +48,30 @@ const RoomPage = () => {
             window.location.href = `/room/${room.id}`;
         }
     }
-    useEffect(() => {
-        const getRooms = async () => {
-            try {
-                const response = await axios.get(`/getRooms`);
-                setRooms(response.data);
-            } catch (error) {
-                console.log(error);
-            }
-        }
 
+    useEffect(() => {
         getRooms();
-    }, [])
+    }, []);
+
+    useEffect(()=>{
+        const pusher = new Pusher('8de87b75a39cda78cd32', {
+            cluster: 'ap2'
+        });
+        const channel = pusher.subscribe('rooms');
+
+        channel.bind('created',(new_room)=>{
+            getRooms();
+        });
+        
+        channel.bind('deleted', ()=>{
+            getRooms();
+        })
+
+        return ()=>{
+            pusher.unbind_all();
+            pusher.unsubscribe();
+        }
+    },[])
     return (
         <div>
             <Navbar />

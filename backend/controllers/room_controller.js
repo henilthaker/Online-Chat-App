@@ -23,6 +23,7 @@ const createRoom = (req, res) => {
     const new_room = new Room(name, tags, createdBy);
     new_room.addUser({name: req.body.createdBy, id: req.body.creatorId});
     rooms.push(new_room);
+    pusher.trigger('rooms','created',new_room);// it is important to send  new_room else pusher will give error
     res.status(200).json(new_room);
 }
 
@@ -49,6 +50,7 @@ const removeRoomUser = (req, res) => {
         const requiredRoom = rooms.filter(room => room.id === req.body.roomId)[0];
         if (requiredRoom && requiredRoom.users.length <= 1) {
             rooms = rooms.filter(room => room.id !== requiredRoom.id);
+            pusher.trigger('rooms','deleted', requiredRoom); // it is important to send  requiredRoom i.e. the room deleted else pusher will give error
         }
         else if (requiredRoom) {
             requiredRoom.removeUser(req.body);

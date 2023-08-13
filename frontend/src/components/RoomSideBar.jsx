@@ -27,14 +27,18 @@ const RoomSideBar = () => {
     useEffect(() => {
         const channel = pusher.subscribe('user-channel');
         channel.bind('joined', (updatedRoom) => {
-            sessionStorage.removeItem('room');
-            sessionStorage.setItem('room', JSON.stringify(updatedRoom));
-            setUsers(updatedRoom.users);
+            if (room.id === updatedRoom.id) {
+                sessionStorage.removeItem('room');
+                sessionStorage.setItem('room', JSON.stringify(updatedRoom));
+                setUsers(updatedRoom.users);
+            }
         })
         channel.bind('left', (updatedRoom) => {
-            sessionStorage.removeItem('room');
-            sessionStorage.setItem('room', JSON.stringify(updatedRoom));
-            setUsers(updatedRoom.users);
+            if (room.id === updatedRoom) {
+                sessionStorage.removeItem('room');
+                sessionStorage.setItem('room', JSON.stringify(updatedRoom));
+                setUsers(updatedRoom.users);
+            }
         })
         return () => {
             pusher.unbind_all();
@@ -61,7 +65,7 @@ const RoomSideBar = () => {
                     ))
                 }
             </div>
-            <button className = "leave-room-btn btn btn-danger"onClick={leaveRoom}>Leave Room</button>
+            <button className="leave-room-btn btn btn-danger" onClick={leaveRoom}>Leave Room</button>
         </div>
     )
 }
