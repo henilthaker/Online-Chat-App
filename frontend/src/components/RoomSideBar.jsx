@@ -43,7 +43,8 @@ const RoomSideBar = () => {
     return (
         <div className="sidebar min-w-[25vw]">
             <div className="sidebar_header">
-                <b><div className="sidebar_title">Users</div></b>
+                <b><div className="sidebar_title">Participants</div></b>
+                <span className="user-cnt">{users.length}</span>
             </div>
             <Divider variant="middle" />
             <div className="chatList">
@@ -58,7 +59,7 @@ const RoomSideBar = () => {
                     ))
                 }
             </div>
-            <button onClick={leaveRoom}>Leave Room</button>
+            <button className = "leave-room-btn btn btn-danger"onClick={leaveRoom}>Leave Room</button>
         </div>
     )
 }
