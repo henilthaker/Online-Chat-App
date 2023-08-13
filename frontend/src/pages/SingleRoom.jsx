@@ -10,11 +10,15 @@ const SingleRoom = () => {
         const handleBeforeUnload = async () => {
             const user = JSON.parse(sessionStorage.getItem('user'));
             const room = JSON.parse(sessionStorage.getItem('room'));
-            await axios.post('/leaveRoom',{...user, roomId : room.id},{
-                headers:{
-                    'Content-Type': 'application/json'
-                }
-            });
+
+            // it is necessary to check the condition in if coz when user clicks on leave room button then I am redirecting the user and before redirecting this request will be made 2nd time if I don't check the condition
+            if (user && room) {
+                await axios.post('/leaveRoom', { ...user, roomId: room.id }, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+            }
         };
         window.addEventListener('beforeunload', handleBeforeUnload);
         return () => {

@@ -44,7 +44,7 @@
    margin-right: 10px;
  }
 
- button {
+ form button {
    background-color: #000;
    color: #fff;
    padding: 10px;
@@ -55,6 +55,8 @@
 
  .submit-button {
    margin-top: 20px;
+   background: var(--primary-bg) !important;
+   border-radius: 0px !important;
  }
 
  @media (min-width: 576px) {
@@ -74,11 +76,13 @@
 
  .room-card {
    padding: 1.5rem;
-   width: 100%;
+   width: fit-content;
+   min-width: 320px;
    border-radius: 20px;
-   background-color: #128C7E;
+   background: var(--primary-bg);
    color: #333333;
    box-shadow: 3px 3px 12px #363636d4;
+   color: #2c3e50;
  }
 
  .tags-section {
@@ -105,6 +109,7 @@
    font-size: 24px !important;
    font-weight: 450 !important;
  }
+
  .room-card h4 {
    font-size: 18px !important;
    font-weight: 350 !important;
@@ -127,4 +132,22 @@
  .create-rooms-title h1 {
    text-align: center;
    margin: 25px 0px;
+ }
+
+ .create-btn {
+   position: fixed !important;
+   right: 15px;
+   bottom: 15px;
+   z-index: 1;
+ }
+
+ .create-icon {
+   height: 45px !important;
+   width: 45px !important;
+ }
+
+ .no-rooms-msg {
+   text-align: center;
+   margin: 20px;
+   font-size: 35px;
  }

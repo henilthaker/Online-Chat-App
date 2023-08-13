@@ -67,7 +67,7 @@
 }
 
 .user-cnt{
-    background-color: teal;
+    background: linear-gradient(135deg, #1abc9c, #00a8b5);
     height: 40px;
     width: 40px;
     color: white;

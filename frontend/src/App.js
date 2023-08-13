@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ChatLogin from './pages/ChatLogin';
 import RoomPage from './pages/Rooms';
 import SingleRoom from './pages/SingleRoom'
+import CreateRoom from './pages/CreateRoom';
 //APP
 function App() {
   const { account, setUsers, users } = useContext(AccountContext);
@@ -37,6 +38,7 @@ function App() {
           <Route exact path="/chats" element={account ? <Home />:<ChatLogin />} />
           <Route exact path="/anonymous-rooms" element={<RoomPage />} />
           <Route exact path="/room/:id" element={<SingleRoom/>} />
+          <Route exact path="/createRoom" element={<CreateRoom/>} />
         </Routes>
       </div>
     </BrowserRouter>

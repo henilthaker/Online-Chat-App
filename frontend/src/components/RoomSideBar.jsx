@@ -19,6 +19,8 @@ const RoomSideBar = () => {
                 'Content-Type': 'application/json'
             }
         });
+        sessionStorage.removeItem('user');
+        sessionStorage.removeItem('room');
         window.location.href = "/anonymous-rooms";
     };
 

@@ -12,36 +12,52 @@ const pusher = new Pusher({
     useTLS: true
 });
 
-let rooms = [new Room("SpaceX Initiatives", ["Blockchain", "Technology"], "Henil"), new Room("Crypto Discussion Forum", ["Blockchain", "Technology"], "Henil"), new Room("Crypto Discussion Forum", ["Blockchain", "Technology"], "Henil")];
+let rooms = [];
 
-const getAllRooms=(req,res)=>{
+const getAllRooms = (req, res) => {
     res.status(200).json(rooms);
 }
 
-const createRoom=(req, res)=>{
-    const {name, tags, createdBy} = req.body;
+const createRoom = (req, res) => {
+    const { name, tags, createdBy } = req.body;
     const new_room = new Room(name, tags, createdBy);
+    new_room.addUser({name: req.body.createdBy, id: req.body.creatorId});
     rooms.push(new_room);
     res.status(200).json(new_room);
 }
 
-const newRoomMessage = (req,res)=>{
+const newRoomMessage = (req, res) => {
     pusher.trigger('room-messages', 'inserted', req.body);
     res.status(200).json('message sent successfully');
 }
 
-const addRoomUser = (req, res)=>{
-    const requiredRoom = rooms.filter(room=>room.id === req.body.roomId)[0];
-    requiredRoom.addUser(req.body);
-    pusher.trigger('user-channel', 'joined', requiredRoom);
-    res.status(200).json(requiredRoom);
+const addRoomUser = (req, res) => {
+    try {
+        const requiredRoom = rooms.filter(room => room.id === req.body.roomId)[0];
+        if (requiredRoom) {
+            requiredRoom.addUser({name: req.body.name, id: req.body.id});
+            pusher.trigger('user-channel', 'joined', requiredRoom);
+        }
+        res.status(200).json(requiredRoom);
+    } catch (error) {
+        res.status(500).json(error.message);
+    }
 }
 
-const removeRoomUser = (req, res)=>{
-    const requiredRoom = rooms.filter(room=>room.id === req.body.roomId)[0];
-    requiredRoom.removeUser(req.body);
-    pusher.trigger('user-channel', 'left', requiredRoom);
-    res.status(200).json('user removed successfully');
+const removeRoomUser = (req, res) => {
+    try {
+        const requiredRoom = rooms.filter(room => room.id === req.body.roomId)[0];
+        if (requiredRoom && requiredRoom.users.length <= 1) {
+            rooms = rooms.filter(room => room.id !== requiredRoom.id);
+        }
+        else if (requiredRoom) {
+            requiredRoom.removeUser(req.body);
+            pusher.trigger('user-channel', 'left', requiredRoom);
+        }
+        res.status(200).json('user removed successfully');
+    } catch (error) {
+        res.status(500).json(error.message);
+    }
 }
 
-module.exports = {getAllRooms, createRoom, newRoomMessage, addRoomUser, removeRoomUser};
+module.exports = { getAllRooms, createRoom, newRoomMessage, addRoomUser, removeRoomUser };
