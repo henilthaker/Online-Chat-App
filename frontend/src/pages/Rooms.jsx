@@ -1,15 +1,24 @@
 import Navbar from "../components/Navbar";
 import "../styles/rooms.css"
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import axios from "../Axios"
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
+import { Dialog, DialogContent, DialogActions, Button } from '@mui/material';
+import CreateRoom from "./CreateRoom";
+
 const { v4: uuidv4 } = require("uuid");
 
 const RoomPage = () => {
     const [rooms, setRooms] = useState([]);
+    const [curRoom, setCurRoom] = useState();
+    const [joinOpen, setJoinOpen] = useState(false);
+    const [createOpen, setCreateOpen] = useState(false);
+    const [avatarName, setAvatarName] = useState('');
+    const handleCreateClose = ()=>{
+        setCreateOpen(false);
+    }
     const goToRoom = async (room) => {
-        const avatarName = prompt("Enter your avatar name");
+        // const avatarName = prompt("Enter your avatar name");
         if (avatarName) {
             const user = {
                 name: avatarName,
@@ -57,17 +66,48 @@ const RoomPage = () => {
                                 <div className="tag" key={j}>{tag}</div>
                             ))}
                         </div>
-                        <button onClick={() => { (goToRoom(room)) }}>
+                        <button onClick={() => {
+                            setCurRoom(room);
+                            setJoinOpen(true);
+                        }}>
                             <div className="join-room">Join Room</div>
                         </button>
                     </div>
                 ))}
+                <Dialog open={joinOpen} onClose={() => setJoinOpen(false)}>
+                    <DialogContent>
+                        {/* <DialogContentText> */}
+                        <div className="form-group">
+                            <label htmlFor="avatarName">Avatar Name:</label>
+                            <input
+                                type="text"
+                                id="avatarName"
+                                value={avatarName}
+                                onChange={(e) => { setAvatarName(e.target.value) }}
+                                required
+                            />
+                        </div>
+                        {/* </DialogContentText> */}
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => {
+                            setJoinOpen(false);
+                            goToRoom(curRoom);
+                        }}>Join</Button>
+
+                        <Button onClick={() => setJoinOpen(false)}>Cancel</Button>
+                    </DialogActions>
+                </Dialog>
             </div>
-            <Link to="/createRoom">
-                <button className="create-btn" title="create your own room">
-                    <AddCircleOutlineRoundedIcon className="create-icon" />
-                </button>
-            </Link>
+            <button className="create-btn" title="create your own room" onClick={()=>setCreateOpen(true)}>
+                <AddCircleOutlineRoundedIcon className="create-icon" />
+            </button>
+            <Dialog open={createOpen} onClose={() => setCreateOpen(false)}>
+                    <DialogContent>
+                        <CreateRoom handleClose = {handleCreateClose}/>
+                    </DialogContent>
+                    {/* Buttons to close the dialog are in CreateRoom */}
+                </Dialog>
         </div>
     )
 }

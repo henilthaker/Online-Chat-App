@@ -8,14 +8,8 @@
 
  .form-container {
    margin: 0 auto;
-   margin-top: 20px;
    width: 475px;
-   padding: 20px;
-   border: 1px solid #ccc;
-   background-color: #fff;
-   border-radius: 10px;
-   box-shadow: 3px 3px 12px #75737394;
- }
+  }
 
 
  .form-group {
@@ -150,4 +144,8 @@
    text-align: center;
    margin: 20px;
    font-size: 35px;
+ }
+
+ .css-ypiqx9-MuiDialogContent-root{
+  padding-bottom: 0px !important;
  }

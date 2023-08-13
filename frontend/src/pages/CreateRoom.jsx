@@ -1,8 +1,10 @@
 import "../styles/rooms.css"
 import { useState } from "react";
 import axios from "../Axios";
+import { Button, DialogActions } from "@mui/material";
+
 const { v4: uuidv4 } = require("uuid");
-const CreateRoom = () => {
+const CreateRoom = ({handleClose}) => {
     const [avatarName, setAvatarName] = useState('');
     const [tags, setTags] = useState([]);
     const [roomName, setRoomName] = useState('');
@@ -51,7 +53,7 @@ const CreateRoom = () => {
             <div className="form-container">
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label htmlFor="roomName">RoomName Name:</label>
+                        <label htmlFor="roomName">Room Name:</label>
                         <input
                             type="text"
                             id="roomName"
@@ -61,7 +63,7 @@ const CreateRoom = () => {
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="avatarName">Avatar Name:</label>
+                        <label htmlFor="avatarName">Created By:</label>
                         <input
                             type="text"
                             id="avatarName"
@@ -121,7 +123,13 @@ const CreateRoom = () => {
                             {/* Add more interest tags as needed */}
                         </div>
                     </div>
-                    <button type="submit" className="submit-button">Create Room</button>
+                    <DialogActions>
+                        <Button onClick={(e) => {
+                            handleClose();
+                            handleSubmit(e);
+                        }}>Create</Button>
+                        <Button onClick={handleClose}>Cancel</Button>
+                    </DialogActions>
                 </form>
             </div>
         </div>
