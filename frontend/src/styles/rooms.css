@@ -1,0 +1,151 @@
+ .phantom-title {
+   font-size: 1.5em;
+   font-weight: lighter;
+   text-align: center;
+   color: #434343;
+   margin: 15px;
+ }
+
+ .form-container {
+   margin: 0 auto;
+   width: 475px;
+  }
+
+
+ .form-group {
+   margin-bottom: 10px;
+ }
+
+ label {
+   font-weight: bold;
+   color: #000;
+ }
+
+ .form-group input {
+   width: 100%;
+   padding: 10px;
+   border: 1px solid #ccc;
+   background-color: #fff;
+ }
+
+ .checkbox-group {
+   margin-bottom: 20px;
+   display: flex;
+   justify-content: space-between;
+ }
+
+ input[type="checkbox"] {
+   margin-right: 10px;
+ }
+
+ form button {
+   background-color: #000;
+   color: #fff;
+   padding: 10px;
+   border: none;
+   cursor: pointer;
+   opacity: 1;
+ }
+
+ .submit-button {
+   margin-top: 20px;
+   background: var(--primary-bg) !important;
+   border-radius: 0px !important;
+ }
+
+ @media (min-width: 576px) {
+   .form-container {
+     width: 475px;
+   }
+ }
+
+ .room-cards-block {
+   margin: 2rem 3rem;
+   display: grid;
+   grid-template-columns: auto auto auto;
+   grid-gap: 2rem;
+   padding-bottom: 2rem;
+   /* border-bottom: 3px solid #5d5d5d; */
+ }
+
+ .room-card {
+   padding: 1.5rem;
+   width: fit-content;
+   min-width: 320px;
+   border-radius: 20px;
+   background: var(--primary-bg);
+   color: #333333;
+   box-shadow: 3px 3px 12px #363636d4;
+   color: #2c3e50;
+ }
+
+ .tags-section {
+   display: flex;
+   justify-content: flex-start;
+   flex-wrap: wrap;
+   margin-bottom: 25px;
+ }
+
+ .tags-section * {
+   margin: 5px;
+   border-radius: 30px;
+   padding: 5px 10px;
+   background-color: #f5f5f5;
+   color: #333333;
+ }
+
+ .room-card button {
+   border: none;
+   background: transparent;
+ }
+
+ .room-card h1 {
+   font-size: 24px !important;
+   font-weight: 450 !important;
+ }
+
+ .room-card h4 {
+   font-size: 18px !important;
+   font-weight: 350 !important;
+   margin: 5px 0px;
+ }
+
+ .room-card a div,
+ .join-room {
+   border-radius: 10px;
+   display: inline;
+   padding: 7px 12px;
+   background-color: #ffffff;
+   font-size: 16px;
+   text-decoration: none;
+   color: black;
+   font-family: sans-serif;
+   font-weight: 300;
+ }
+
+ .create-rooms-title h1 {
+   text-align: center;
+   margin: 25px 0px;
+ }
+
+ .create-btn {
+   position: fixed !important;
+   right: 15px;
+   bottom: 15px;
+   z-index: 1;
+ }
+
+ .create-icon {
+   height: 45px !important;
+   width: 45px !important;
+ }
+
+ .no-rooms-msg {
+   text-align: center;
+   margin: 20px;
+   font-size: 35px;
+ }
+
+ .css-ypiqx9-MuiDialogContent-root{
+  padding-bottom: 0px !important;
+ }

@@ -11,7 +11,7 @@ const ChatBox = () => {
     return (
         <Box className="min-w-[75vw]">
             <ChatHeader person={person} />
-            <Messages />
+            <Messages type="chat"/>
         </Box>
     )
 }

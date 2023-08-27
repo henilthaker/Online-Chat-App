@@ -5,6 +5,7 @@ const { uploadFile, getFile } = require('./controllers/file_controller.js');
 const { newMessage, getMessage } = require('./controllers/message_controller.js');
 const { addUser, getUser } = require('./controllers/user_controller.js');
 const upload = require('./utils/upload.js');
+const {getAllRooms, createRoom, newRoomMessage, addRoomUser, removeRoomUser} = require('./controllers/room_controller.js');
 
 // setup router 
 const router = express.Router();
@@ -27,5 +28,13 @@ router.get('/user/get', getUser);
 // file routes
 router.post('/file/upload', upload.single('file'), uploadFile);
 router.get('/file/:filename', getFile);
+
+// room routes
+router.get('/getRooms', getAllRooms);
+router.post('/createRoom', createRoom);
+router.post('/room-message/new', newRoomMessage);
+router.post('/joinRoom', addRoomUser);
+router.post('/leaveRoom', removeRoomUser);
+// router.post('/getRooms',getFilter)
 
 module.exports = router;

@@ -10,6 +10,10 @@
     margin-left: 12px !important;
 }
 
+.room-name{
+    font-size: 20px !important;
+}
+
 .Status{
     font-size: 12px !important;
     color: rgb(0, 0, 0, 0.6);

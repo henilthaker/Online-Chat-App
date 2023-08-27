@@ -8,6 +8,7 @@
     flex: 0.25;
     background-color: whitesmoke;
     height: 99vh;
+    position: relative;
 }
 
 .sidebar_header{
@@ -19,7 +20,7 @@
 }
 
 .sidebar_title{
-    font-size: 24px;
+    font-size: 20px;
     margin-left: 10px;
 }
 
@@ -56,4 +57,22 @@
 
 .chatList{
     overflow-y: scroll;
+}
+
+.leave-room-btn{
+    border-radius: 0px !important;
+    position: fixed;
+    bottom: 6px;
+    width: 25vw;
+}
+
+.user-cnt{
+    background: linear-gradient(135deg, #1abc9c, #00a8b5);
+    height: 40px;
+    width: 40px;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
