@@ -2,7 +2,6 @@ import ChatBox from "../components/RoomChatBox";
 import SideBar from "../components/RoomSideBar";
 import '../styles/home.css';
 import axios from '../Axios';
-import { Room } from "@mui/icons-material";
 import { useEffect } from "react";
 
 const SingleRoom = () => {
@@ -10,6 +9,9 @@ const SingleRoom = () => {
         const handleBeforeUnload = async () => {
             const user = JSON.parse(sessionStorage.getItem('user'));
             const room = JSON.parse(sessionStorage.getItem('room'));
+
+            // Before the user logs out, store a flag in localStorage
+            localStorage.setItem('logoutFlag', 'true');
 
             // it is necessary to check the condition in if coz when user clicks on leave room button then I am redirecting the user and before redirecting this request will be made 2nd time if I don't check the condition
             if (user && room) {
@@ -19,9 +21,13 @@ const SingleRoom = () => {
                     }
                 });
             }
+            if(localStorage.getItem('logoutFlag'))
+                window.location.href = "/anonymous-rooms"
         };
         window.addEventListener('beforeunload', handleBeforeUnload);
         return () => {
+            // Clear the flag from localStorage
+            localStorage.removeItem('logoutFlag');
             window.removeEventListener('beforeunload', handleBeforeUnload);
         };
     }, []);

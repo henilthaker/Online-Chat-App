@@ -34,7 +34,7 @@ const RoomSideBar = () => {
             }
         })
         channel.bind('left', (updatedRoom) => {
-            if (room.id === updatedRoom) {
+            if (room.id === updatedRoom.id) {
                 sessionStorage.removeItem('room');
                 sessionStorage.setItem('room', JSON.stringify(updatedRoom));
                 setUsers(updatedRoom.users);

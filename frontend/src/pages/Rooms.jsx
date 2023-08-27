@@ -113,7 +113,7 @@ const RoomPage = () => {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={() => {
-                            setJoinOpen(false);
+                            // setJoinOpen(false);
                             goToRoom(curRoom);
                         }}>Join</Button>
 
