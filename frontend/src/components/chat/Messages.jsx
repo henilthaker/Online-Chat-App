@@ -88,7 +88,7 @@ const Messages = ({ type }) => {
     useEffect(() => {
         if (type === "chat")
             getMessages();
-    }, [chat]);
+    }, [chat, type, getMessages]);
 
     useEffect(() => {
         const pusher = new Pusher('8de87b75a39cda78cd32', {
@@ -124,7 +124,7 @@ const Messages = ({ type }) => {
             pusher.unbind_all();
             pusher.unsubscribe();
         }
-    }, [messages]);
+    }, [messages, chat._id, chat.last_message, dispatch, setChat, type]);
 
     useEffect(() => {
         scroll_ref.current?.scrollTo(0, scroll_ref.current.scrollHeight);

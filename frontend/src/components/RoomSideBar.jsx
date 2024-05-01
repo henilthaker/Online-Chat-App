@@ -1,6 +1,6 @@
 import '../styles/sidebar.css';
 import Divider from '@mui/material/Divider';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from '../Axios.js';
 import Pusher from 'pusher-js';
 const RoomSideBar = () => {
@@ -44,7 +44,7 @@ const RoomSideBar = () => {
             pusher.unbind_all();
             pusher.unsubscribe();
         }
-    }, [users]);
+    }, [users, pusher, room.id]);
 
     return (
         <div className="sidebar min-w-[25vw]">
