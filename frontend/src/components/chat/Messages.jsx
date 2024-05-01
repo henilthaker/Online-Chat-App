@@ -88,7 +88,7 @@ const Messages = ({ type }) => {
     useEffect(() => {
         if (type === "chat")
             getMessages();
-    }, [chat, type, getMessages]);
+    }, [chat, type]);
 
     useEffect(() => {
         const pusher = new Pusher('8de87b75a39cda78cd32', {

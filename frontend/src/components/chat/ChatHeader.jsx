@@ -1,7 +1,6 @@
 import { Box, Typography, styled } from '@mui/material';
 import '../../styles/chat.css';
-import AccountContext from '../../context/accountContext/AccountDetails';    
-import React, { useContext } from 'react';
+import React from 'react';
 
 const Image = styled('img')({
     width: 40,
