@@ -1,6 +1,6 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, styled } from '@mui/material';
 import '../styles/chat.css';
-import React from 'react';
+import React, { useContext } from 'react';
 
 //components
 import Messages from '../components/chat/Messages';

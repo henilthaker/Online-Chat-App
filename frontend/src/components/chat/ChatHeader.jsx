@@ -11,6 +11,7 @@ const Image = styled('img')({
 })
 
 const ChatHeader = ({ person }) => {  
+    const { users } = useContext(AccountContext);
     return (
         <Box className="Header my-2">
             <Image src={person.picture} alt="display picture" />     

@@ -23,7 +23,7 @@ const SingleChat = ({ user }) => {
     useEffect(() => {
         if (cur_chat._id === chat._id)
             setCurChat(prevChat => ({ ...prevChat, last_message: chat.last_message }));
-    }, [chat, cur_chat._id])
+    }, [chat])
 
     const createChat = async (e) => {
         e.preventDefault();
