@@ -44,7 +44,7 @@ const RoomSideBar = () => {
             pusher.unbind_all();
             pusher.unsubscribe();
         }
-    }, [users, room.id]);
+    }, [users, pusher, room.id]);
 
     return (
         <div className="sidebar min-w-[25vw]">
