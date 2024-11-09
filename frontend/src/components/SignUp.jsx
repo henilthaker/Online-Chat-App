@@ -14,14 +14,11 @@ const SignUp = () => {
         setAccount(decodeData);
         toast.success('Login Success');
         try {
-            await fetch('http://localhost:4000/api/user/add', {
-                method: 'POST',
+            await axios.post('/user/add', decodeData, {
                 headers: {
-                    'Content-Type': 'application/json',
-                    'cors': 'no-cors'
-                },
-                body: JSON.stringify(decodeData)
-            })
+                    'Content-Type': 'application/json'
+                }
+            });
         } catch (error) {
             console.log('Something went wrong' + error.message);
         }
