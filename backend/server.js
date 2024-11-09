@@ -19,7 +19,9 @@ const pusher = new Pusher({
 });
 
 // middleware
-app.use(cors());
+app.use(cors({
+    origin: 'https://online-chat-app-gamma.vercel.app'
+}));
 app.use(express.json());
 app.use(bodyParser.json({ extended: true }))
 app.use(bodyParser.urlencoded({ extended: false }));
