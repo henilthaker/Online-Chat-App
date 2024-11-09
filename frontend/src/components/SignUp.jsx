@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import jwtDecode from 'jwt-decode';
 import { useContext } from 'react';
 import AccountContext from '../context/accountContext/AccountDetails';
+import axios from '../Axios.js';
 
 const SignUp = () => {
 
